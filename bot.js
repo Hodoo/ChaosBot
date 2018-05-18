@@ -101,19 +101,16 @@ client.on("message", (message) => {
     var matchedemojis = getMatches(message.content, myRegEx, 1);
   // If no emojis are present, return
     if (matchedemojis.length === 0) {return;};
-  // Otherwise, react with up to 10 matched emojis
-    message.react(matchedemojis[0])
-      .then( () => message.react(matchedemojis[1]) )
-      .then( () => message.react(matchedemojis[2]) )
-      .then( () => message.react(matchedemojis[3]) )
-      .then( () => message.react(matchedemojis[4]) )
-      .then( () => message.react(matchedemojis[5]) )
-      .then( () => message.react(matchedemojis[6]) )
-      .then( () => message.react(matchedemojis[7]) )
-      .then( () => message.react(matchedemojis[8]) )
-      .then( () => message.react(matchedemojis[9]) )
-    // Catch any errors that may occur
-      .catch((err) => {});
+  // Otherwise, react with the matched emojis
+    var i = 0   // Reset iteration to 0 before starting
+    // Iterate reactions through the matched emojis
+    var react = setInterval(function(){
+      message.react(matchedemojis[i])
+      i++;
+      if(i === matchedemojis.length) {
+          clearInterval(react);
+      }
+    }, 550);
   }
 
   // Check if posted in a suggestion channel

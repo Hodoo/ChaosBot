@@ -1,7 +1,7 @@
 {
   "name": "ChaosBot",
-  "version": "0.1.0",
-  "description": "A simple discord.js bot to automatically add reactions to posts in voting and suggestion channels.",
+  "version": "0.2.0",
+  "description": "A simple Discord bot to automatically add reactions to posts in voting and suggestion channels.",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"

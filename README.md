@@ -6,7 +6,7 @@ A simple Discord bot to automatically add reactions to posts in voting and sugge
 
 ChaosBot keeps track of two types of channels, suggestion channels and voting channels.
 
-In voting channels, ChaosBot will extract up to 10 *custom* emojis from any messages posted in the channel and react to the message with them, to easily set up multiple-choice reaction polls.
+In voting channels, ChaosBot will extract all *custom* emojis from any messages posted in the channel and react to the message with them, to easily set up multiple-choice reaction polls.
 
 
 In suggestion channels, ChaosBot will react to any messages posted in the channel with the server's custom :upvote: and :downvote: emojis, to instantly enable voting on any number of suggestions.
@@ -42,9 +42,7 @@ Create a copy of `config-default.json` in the `data` folder and rename it `confi
 
 
 #### If self-hosting:
-- Install [nodejs](https://nodejs.org) 
+- Install [nodejs](https://nodejs.org)
 - Install dependencies
 - Remove the 'Glitch section' from `bot.js`
 - Run `node bot.js`
-
-
