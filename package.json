@@ -1,0 +1,23 @@
+{
+  "name": "ChaosBot",
+  "version": "0.1.0",
+  "description": "A simple discord.js bot to automatically add reactions to posts in voting and suggestion channels.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "discord.js": "^11.3.2"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hodoo/ChaosBot.git"
+  },
+  "author": "Hodoo (https://twitter.com/TheHodoo)",
+  "license": "MIT",
+  "private": true
+}
