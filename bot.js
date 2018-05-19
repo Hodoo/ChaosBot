@@ -17,7 +17,7 @@ var listener = app.listen(process.env.PORT, function () {
 });
 // Print received pings to console
 app.get("/", (request, response) => {
-  console.log(Date.now() + " Ping Received");
+  console.log(`${Date.now()}: Ping Received`);
   response.sendStatus(200);
 });
 // Ping self every 280 seconds to keep alive
@@ -30,7 +30,7 @@ setInterval(() => {
 // Bot start
 client.on("ready", () => {
   client.user.setActivity('your votes', { type: 'WATCHING' });
-  console.log("ChaosBot version: " + version);
+  console.log(`ChaosBot version: ${version}`);
   console.log("ChaosBot is running");
 });
 
@@ -63,7 +63,7 @@ client.on("message", (message) => {
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
     // change the server configuration in memory
     server.prefix = newPrefix;
-    message.channel.send("Prefix changed to: " + server.prefix).catch(logSendError);
+    message.channel.send(`Prefix changed to: ${server.prefix}`).catch(logSendError);
     // Now we have to save the file.
     fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
     return;
@@ -71,7 +71,7 @@ client.on("message", (message) => {
 
   // Command to return current version number
   if(message.content.startsWith(server.prefix + "version")) {
-    message.channel.send("Currently running ChaosBot " + version).catch(logSendError);
+    message.channel.send(`Currently running ChaosBot v${version}`).catch(logSendError);
     return;
   }
 
@@ -83,7 +83,7 @@ client.on("message", (message) => {
     }
     // Don't allow the same channel in both categories
     if (server.votingchannels.includes(message.channel.id)) {
-      message.channel.send("<#" + message.channel.id + "> is already a voting channel!").catch(logSendError);
+      message.channel.send(`<#${message.channel.id}> is already a voting channel!`).catch(logSendError);
       return;
     }
     // Find the index of the current channel
@@ -91,11 +91,11 @@ client.on("message", (message) => {
     // If found, remove from array
     if (index > -1) {
       server.suggestchannels.splice(index, 1);
-      message.channel.send("<#" + message.channel.id + "> removed from suggestion channels list.").catch(logSendError);
+      message.channel.send(`<#${message.channel.id}> removed from suggestion channels list.`).catch(logSendError);
     } else {
     // If not found, add to array
       server.suggestchannels.push(message.channel.id);
-      message.channel.send("<#" + message.channel.id + "> added to suggestion channels list.").catch(logSendError);
+      message.channel.send(`<#${message.channel.id}> added to suggestion channels list.`).catch(logSendError);
     }
     // Save the server config file.
     fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
@@ -110,7 +110,7 @@ client.on("message", (message) => {
     }
     // Don't allow the same channel in both categories
     if (server.suggestchannels.includes(message.channel.id)) {
-      message.channel.send("<#" + message.channel.id + "> is already a suggestion channel!").catch(logSendError);
+      message.channel.send(`<#${message.channel.id}> is already a suggestion channel!`).catch(logSendError);
       return;
     }
     // Find the index of the current channel
@@ -118,11 +118,11 @@ client.on("message", (message) => {
     // If found, remove from array
     if (index > -1) {
       server.votingchannels.splice(index, 1);
-      message.channel.send("<#" + message.channel.id + "> removed from voting channels list.").catch(logSendError);
+      message.channel.send(`<#${message.channel.id}> removed from voting channels list.`).catch(logSendError);
     } else {
     // If not found, add to array
       server.votingchannels.push(message.channel.id);
-      message.channel.send("<#" + message.channel.id + "> added to voting channels list.").catch(logSendError);
+      message.channel.send(`<#${message.channel.id}> added to voting channels list.`).catch(logSendError);
     }
     // Save the server config file.
     fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
@@ -169,10 +169,10 @@ client.on("message", (message) => {
   };
 
   function logSendError(reason) {
-    console.log(Date.now() + ": ERROR: " + message.guild.name + ": #" + message.channel.name + " -- " + reason + ", while attempting to send message");
+    console.log(`${Date.now()}: ERROR: ${message.guild.name}: #${message.channel.name} -- ${reason}, while attempting to send message`);
   };
   function logReactError(reason) {
-    console.log(Date.now() + ": ERROR: " + message.guild.name + ": #" + message.channel.name + " -- " + reason + ", while attempting to add reaction");
+    console.log(`${Date.now()}: ERROR: ${message.guild.name}: #${message.channel.name} -- ${reason}, while attempting to add reaction`);
   };
 
 });
