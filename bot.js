@@ -45,12 +45,12 @@ client.on("message", (message) => {
   // Command to toggle current channel as a suggestion channel
   if(message.content.startsWith(config.prefix + "suggest")) {
     if(message.author.id !== config.ownerID) {
-      message.channel.send("You don't have permission to use that command!");
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
     // Don't allow the same channel in both categories
     if (config.votingchannels.includes(message.channel.id)) {
-      message.channel.send("<#" + message.channel.id + "> is already a voting channel!")
+      message.channel.send("<#" + message.channel.id + "> is already a voting channel!").catch(logSendError);
       return;
     }
     // Find the index of the current channel
@@ -58,11 +58,11 @@ client.on("message", (message) => {
     // If found, remove from array
     if (index > -1) {
       config.suggestchannels.splice(index, 1);
-      message.channel.send("<#" + message.channel.id + "> removed from suggestion channels list.");
+      message.channel.send("<#" + message.channel.id + "> removed from suggestion channels list.").catch(logSendError);
     } else {
     // If not found, add to array
       config.suggestchannels.push(message.channel.id);
-      message.channel.send("<#" + message.channel.id + "> added to suggestion channels list.");
+      message.channel.send("<#" + message.channel.id + "> added to suggestion channels list.").catch(logSendError);
     }
     // Save the config file.
     fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
@@ -72,12 +72,12 @@ client.on("message", (message) => {
   // Command to toggle current channel as a voting channel
   if(message.content.startsWith(config.prefix + "voting")) {
     if(message.author.id !== config.ownerID) {
-      message.channel.send("You don't have permission to use that command!");
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
     // Don't allow the same channel in both categories
     if (config.suggestchannels.includes(message.channel.id)) {
-      message.channel.send("<#" + message.channel.id + "> is already a suggestion channel!")
+      message.channel.send("<#" + message.channel.id + "> is already a suggestion channel!").catch(logSendError);
       return;
     }
     // Find the index of the current channel
@@ -85,11 +85,11 @@ client.on("message", (message) => {
     // If found, remove from array
     if (index > -1) {
       config.votingchannels.splice(index, 1);
-      message.channel.send("<#" + message.channel.id + "> removed from voting channels list.");
+      message.channel.send("<#" + message.channel.id + "> removed from voting channels list.").catch(logSendError);
     } else {
     // If not found, add to array
       config.votingchannels.push(message.channel.id);
-      message.channel.send("<#" + message.channel.id + "> added to voting channels list.");
+      message.channel.send("<#" + message.channel.id + "> added to voting channels list.").catch(logSendError);
     }
     // Save the config file.
     fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
@@ -107,7 +107,7 @@ client.on("message", (message) => {
     var i = 0   // Reset iteration to 0 before starting
     // Iterate reactions through the matched emojis
     var react = setInterval(function(){
-      message.react(matchedemojis[i])
+      message.react(matchedemojis[i]).catch(logReactError);
       i++;
       if(i === matchedemojis.length) {
           clearInterval(react);
@@ -124,28 +124,35 @@ client.on("message", (message) => {
     message.react(upvote.id)
       .then( () => message.react(downvote.id) )
   // Catch any errors that may occur
-      .catch((err) => {});
+      .catch(logReactError);
     return;
   }
 
 
   if(message.content.startsWith(config.prefix + "prefix")) {
     if(message.author.id !== config.ownerID) {
-      message.channel.send("You don't have permission to use that command!");
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
     // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
     // change the configuration in memory
     config.prefix = newPrefix;
-    message.channel.send("Prefix changed to: " + config.prefix);
+    message.channel.send("Prefix changed to: " + config.prefix).catch(logSendError);
     // Now we have to save the file.
     fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
   }
 
   if(message.content.startsWith(config.prefix + "version")) {
-    message.channel.send("Currently running ChaosBot " + version);
-  }
+    message.channel.send("Currently running ChaosBot " + version).catch(logSendError);
+  };
+
+  function logSendError(reason) {
+    console.log(Date.now() + ": ERROR: " + message.guild.name + ": #" + message.channel.name + " -- " + reason + ", while attempting to send message");
+  };
+  function logReactError(reason) {
+    console.log(Date.now() + ": ERROR: " + message.guild.name + ": #" + message.channel.name + " -- " + reason + ", while attempting to add reaction");
+  };
 
 });
 
