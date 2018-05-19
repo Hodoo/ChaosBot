@@ -53,6 +53,28 @@ client.on("message", (message) => {
   // Ignore messages from bots
   if (message.author.bot) return;
 
+  // Command to change server prefix
+  if(message.content.startsWith(server.prefix + "prefix")) {
+    if(message.author.id !== server.ownerID) {
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
+      return;
+    }
+    // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
+    let newPrefix = message.content.split(" ").slice(1, 2)[0];
+    // change the server configuration in memory
+    server.prefix = newPrefix;
+    message.channel.send("Prefix changed to: " + server.prefix).catch(logSendError);
+    // Now we have to save the file.
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
+    return;
+  }
+
+  // Command to return current version number
+  if(message.content.startsWith(server.prefix + "version")) {
+    message.channel.send("Currently running ChaosBot " + version).catch(logSendError);
+    return;
+  }
+
   // Command to toggle current channel as a suggestion channel
   if(message.content.startsWith(server.prefix + "suggest")) {
     if(message.author.id !== server.ownerID) {
@@ -107,6 +129,12 @@ client.on("message", (message) => {
     return;
   }
 
+
+
+  /*
+  Make sure to keep the following sections at the end, to prevent processing emojis on commands
+  */
+
   // Check if posted in a voting channel
   if (server.votingchannels.includes(message.channel.id)) {
   // Extract custom emojis from message if present
@@ -124,6 +152,7 @@ client.on("message", (message) => {
           clearInterval(react);
       }
     }, 550);
+    return;
   }
 
   // Check if posted in a suggestion channel
@@ -137,25 +166,6 @@ client.on("message", (message) => {
   // Catch any errors that may occur
       .catch(logReactError);
     return;
-  }
-
-
-  if(message.content.startsWith(server.prefix + "prefix")) {
-    if(message.author.id !== server.ownerID) {
-      message.channel.send("You don't have permission to use that command!").catch(logSendError);
-      return;
-    }
-    // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
-    let newPrefix = message.content.split(" ").slice(1, 2)[0];
-    // change the server configuration in memory
-    server.prefix = newPrefix;
-    message.channel.send("Prefix changed to: " + server.prefix).catch(logSendError);
-    // Now we have to save the file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
-  }
-
-  if(message.content.startsWith(server.prefix + "version")) {
-    message.channel.send("Currently running ChaosBot " + version).catch(logSendError);
   };
 
   function logSendError(reason) {
