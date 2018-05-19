@@ -5,6 +5,7 @@ const http = require('http');
 const Discord = require("discord.js");
 const fs = require("fs")
 const config = require("./data/config.json");
+const serverdefault = require("./data/server-default.json");
 const client = new Discord.Client();
 var pkginfo = require('pkginfo')(module, 'version');
 var version = module.exports.version;
@@ -33,71 +34,81 @@ client.on("ready", () => {
   console.log("ChaosBot is running");
 });
 
+client.on("guildCreate", (guild) => {
+  console.log(Date.now() + ": JOINED: " + guild.name + " (" + guild.id + ")");
+  var newserver = serverdefault;
+  newserver.ownerID = guild.ownerID;
+  fs.writeFile(`./data/servers/${guild.id}.json`, JSON.stringify(newserver), (err) => console.error);
+});
+
 client.on("message", (message) => {
 
 /*
   console.log(message.content);
 */
 
+  // Get information from server's json
+  var server = require(`./data/servers/${message.guild.id}.json`);
+
   // Ignore messages from bots
   if (message.author.bot) return;
 
   // Command to toggle current channel as a suggestion channel
-  if(message.content.startsWith(config.prefix + "suggest")) {
-    if(message.author.id !== config.ownerID) {
+  if(message.content.startsWith(server.prefix + "suggest")) {
+    if(message.author.id !== server.ownerID) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
     // Don't allow the same channel in both categories
-    if (config.votingchannels.includes(message.channel.id)) {
+    if (server.votingchannels.includes(message.channel.id)) {
       message.channel.send("<#" + message.channel.id + "> is already a voting channel!").catch(logSendError);
       return;
     }
     // Find the index of the current channel
-    var index = config.suggestchannels.indexOf(message.channel.id);
+    var index = server.suggestchannels.indexOf(message.channel.id);
     // If found, remove from array
     if (index > -1) {
-      config.suggestchannels.splice(index, 1);
+      server.suggestchannels.splice(index, 1);
       message.channel.send("<#" + message.channel.id + "> removed from suggestion channels list.").catch(logSendError);
     } else {
     // If not found, add to array
-      config.suggestchannels.push(message.channel.id);
+      server.suggestchannels.push(message.channel.id);
       message.channel.send("<#" + message.channel.id + "> added to suggestion channels list.").catch(logSendError);
     }
-    // Save the config file.
-    fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
+    // Save the server config file.
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
     return;
   }
 
   // Command to toggle current channel as a voting channel
-  if(message.content.startsWith(config.prefix + "voting")) {
-    if(message.author.id !== config.ownerID) {
+  if(message.content.startsWith(server.prefix + "voting")) {
+    if(message.author.id !== server.ownerID) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
     // Don't allow the same channel in both categories
-    if (config.suggestchannels.includes(message.channel.id)) {
+    if (server.suggestchannels.includes(message.channel.id)) {
       message.channel.send("<#" + message.channel.id + "> is already a suggestion channel!").catch(logSendError);
       return;
     }
     // Find the index of the current channel
-    var index = config.votingchannels.indexOf(message.channel.id);
+    var index = server.votingchannels.indexOf(message.channel.id);
     // If found, remove from array
     if (index > -1) {
-      config.votingchannels.splice(index, 1);
+      server.votingchannels.splice(index, 1);
       message.channel.send("<#" + message.channel.id + "> removed from voting channels list.").catch(logSendError);
     } else {
     // If not found, add to array
-      config.votingchannels.push(message.channel.id);
+      server.votingchannels.push(message.channel.id);
       message.channel.send("<#" + message.channel.id + "> added to voting channels list.").catch(logSendError);
     }
-    // Save the config file.
-    fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
+    // Save the server config file.
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
     return;
   }
 
   // Check if posted in a voting channel
-  if (config.votingchannels.includes(message.channel.id)) {
+  if (server.votingchannels.includes(message.channel.id)) {
   // Extract custom emojis from message if present
     var myRegEx = /<:\w+:(\d+)>/g;
     var matchedemojis = getMatches(message.content, myRegEx, 1);
@@ -116,7 +127,7 @@ client.on("message", (message) => {
   }
 
   // Check if posted in a suggestion channel
-  if (config.suggestchannels.includes(message.channel.id)) {
+  if (server.suggestchannels.includes(message.channel.id)) {
   // Get server's :upvote: and :downvote: emojis
     const upvote = client.emojis.find("name", "upvote");
     const downvote = client.emojis.find("name", "downvote");
@@ -129,21 +140,21 @@ client.on("message", (message) => {
   }
 
 
-  if(message.content.startsWith(config.prefix + "prefix")) {
-    if(message.author.id !== config.ownerID) {
+  if(message.content.startsWith(server.prefix + "prefix")) {
+    if(message.author.id !== server.ownerID) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
     // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
     let newPrefix = message.content.split(" ").slice(1, 2)[0];
-    // change the configuration in memory
-    config.prefix = newPrefix;
-    message.channel.send("Prefix changed to: " + config.prefix).catch(logSendError);
+    // change the server configuration in memory
+    server.prefix = newPrefix;
+    message.channel.send("Prefix changed to: " + server.prefix).catch(logSendError);
     // Now we have to save the file.
-    fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
   }
 
-  if(message.content.startsWith(config.prefix + "version")) {
+  if(message.content.startsWith(server.prefix + "version")) {
     message.channel.send("Currently running ChaosBot " + version).catch(logSendError);
   };
 

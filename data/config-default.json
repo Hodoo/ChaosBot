@@ -1,7 +1,4 @@
 {
   "token":"Your Discord Bot Token",
-  "prefix":"!",
-  "ownerID":"Your Discord ID",
-  "votingchannels":[],
-  "suggestchannels":[]
+  "ownerID":"Your Discord ID"
 }
