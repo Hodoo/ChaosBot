@@ -21,10 +21,13 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!voting` - Toggles the current channel as a voting channel
 
+`!version` - Returns the current ChaosBot version
 
 ## Dependencies
 
 [Express](https://expressjs.com/) 4.16.3
+
+[pkginfo](https://www.npmjs.com/package/pkginfo) 0.4.1
 
 [discord.js](https://discord.js.org/) 11.3.2
 

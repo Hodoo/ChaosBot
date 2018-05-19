@@ -6,12 +6,13 @@ const Discord = require("discord.js");
 const fs = require("fs")
 const config = require("./data/config.json");
 const client = new Discord.Client();
-
+var pkginfo = require('pkginfo')(module, 'version');
+var version = module.exports.version;
 
 // Start of Glitch section to keep app from sleeping, not needed if self-hosting
 // Listen for requests
 var listener = app.listen(process.env.PORT, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
+  console.log("Listening on port " + listener.address().port);
 });
 // Print received pings to console
 app.get("/", (request, response) => {
@@ -28,7 +29,8 @@ setInterval(() => {
 // Bot start
 client.on("ready", () => {
   client.user.setActivity('your votes', { type: 'WATCHING' });
-  console.log("I am ready!");
+  console.log("ChaosBot version: " + version);
+  console.log("ChaosBot is running");
 });
 
 client.on("message", (message) => {
@@ -141,6 +143,9 @@ client.on("message", (message) => {
     fs.writeFile("./data/config.json", JSON.stringify(config), (err) => console.error);
   }
 
+  if(message.content.startsWith(config.prefix + "version")) {
+    message.channel.send("Currently running ChaosBot " + version);
+  }
 
 });
 
