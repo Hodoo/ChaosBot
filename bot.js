@@ -12,6 +12,7 @@ var version = module.exports.version;
 
 // RegEx  Patterns
 var chanPattern = /<#(\d+)>/;
+var emojiPattern = /<:\w+:(\d+)>/g;
 
 // Start of Glitch section to keep app from sleeping, not needed if self-hosting
 // Listen for requests
@@ -165,8 +166,7 @@ client.on("message", (message) => {
   // Check if posted in a voting channel
   if (server.votingchannels.includes(message.channel.id)) {
   // Extract custom emojis from message if present
-    var myRegEx = /<:\w+:(\d+)>/g;
-    var matchedemojis = getMatches(message.content, myRegEx, 1);
+    var matchedemojis = getMatches(message.content, emojiPattern, 1);
   // If no emojis are present, return
     if (matchedemojis.length === 0) {return;};
   // Otherwise, react with the matched emojis
