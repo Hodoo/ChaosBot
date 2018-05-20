@@ -21,6 +21,8 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!voting` - Toggles the current channel as a voting channel
 
+`!say [(#channel) message]` - Sends your message in the mentioned channel, or the current channel if omitted
+
 `!version` - Returns the current ChaosBot version
 
 ## Dependencies

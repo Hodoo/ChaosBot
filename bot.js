@@ -10,6 +10,9 @@ const client = new Discord.Client();
 var pkginfo = require('pkginfo')(module, 'version');
 var version = module.exports.version;
 
+// RegEx  Patterns
+var chanPattern = /<#(\d+)>/;
+
 // Start of Glitch section to keep app from sleeping, not needed if self-hosting
 // Listen for requests
 var listener = app.listen(process.env.PORT, function () {
@@ -66,6 +69,30 @@ client.on("message", (message) => {
     message.channel.send(`Prefix changed to: ${server.prefix}`).catch(logSendError);
     // Now we have to save the file.
     fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
+    return;
+  }
+
+  // Make the bot say whatever you want, wherever you want
+  if(message.content.startsWith(server.prefix + "say")) {
+    if(message.author.id !== server.ownerID) {
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
+      return;
+    }
+    // If message starts with a channel mention, try to send message there
+    if (message.content.split(" ", 2)[1].startsWith("<#")) {
+      let channel = message.guild.channels.find('id', chanPattern.exec(message.content.split(" ", 2)[1])[1]);
+      if (!channel) {
+        message.channel.send("Channel not found.").catch(logSendError);
+        return;
+      }
+      let newmsg = message.content.slice(27);
+      channel.send(newmsg).catch(logSendError);
+    }
+    // Otherwise, send message in current channel
+    else {
+      let newmsg = message.content.slice(5);
+      message.channel.send(newmsg).catch(logSendError);
+    }
     return;
   }
 
