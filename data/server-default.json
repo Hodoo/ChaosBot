@@ -2,6 +2,7 @@
   "prefix":"!",
   "ownerID":"",
   "authUsers":[],
+  "authcommands":[],
   "votingchannels":[],
   "suggestchannels":[]
 }

@@ -10,8 +10,16 @@ const client = new Discord.Client();
 var pkginfo = require('pkginfo')(module, 'version');
 var version = module.exports.version;
 
+// List of valid protected commands
+var commandsList = ["prefix","suggest","voting","say"]
+// List of safe commands
+var safeList = ["version"]
+// List of protected commands
+var protectedList = ["auth"]
+
 // RegEx  Patterns
 var chanPattern = /<#(\d+)>/;
+var userPattern = /(\d+)>/;
 var emojiPattern = /<:\w+:(\d+)>/g;
 
 // Start of Glitch section to keep app from sleeping, not needed if self-hosting
@@ -52,14 +60,15 @@ client.on("message", (message) => {
 */
 
   // Get information from server's json
-  var server = require(`./data/servers/${message.guild.id}.json`);
+  let server = require(`./data/servers/${message.guild.id}.json`);
 
   // Ignore messages from bots
   if (message.author.bot) return;
 
   // Command to change server prefix
   if(message.content.startsWith(server.prefix + "prefix")) {
-    if(message.author.id !== server.ownerID) {
+    let cmd = "prefix";
+    if(!(message.author.id == server.ownerID || server.authUsers.includes(message.author.id) && server.authcommands.includes(cmd))) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
@@ -75,7 +84,8 @@ client.on("message", (message) => {
 
   // Make the bot say whatever you want, wherever you want
   if(message.content.startsWith(server.prefix + "say")) {
-    if(message.author.id !== server.ownerID) {
+    let cmd = "say";
+    if(!(message.author.id == server.ownerID || server.authUsers.includes(message.author.id) && server.authcommands.includes(cmd))) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
@@ -99,13 +109,57 @@ client.on("message", (message) => {
 
   // Command to return current version number
   if(message.content.startsWith(server.prefix + "version")) {
+    let cmd = "version";
     message.channel.send(`Currently running ChaosBot v${version}`).catch(logSendError);
+    return;
+  }
+
+  // Command to toggle mentioned user or command as authorized
+  if(message.content.startsWith(server.prefix + "auth")) {
+    let cmd = "auth";
+    if(!(message.author.id == server.ownerID)) {
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
+      return;
+    }
+    let arg = message.content.split(" ", 2)[1];
+    // If message starts with a user mention, add or remove that user from authUsers
+    if (arg.startsWith("<@")) {
+      let target = userPattern.exec(arg)[1];
+      // Find the index of the target user
+      var index = server.authUsers.indexOf(target);
+      // If found, remove from array
+      if (index > -1) {
+        server.authUsers.splice(index, 1);
+        message.channel.send(`<@${target}> removed from authorized users.`).catch(logSendError);
+      } else {
+      // If not found, add to array
+        server.authUsers.push(target);
+        message.channel.send(`<@${target}> added to authorized users.`).catch(logSendError);
+      }
+    } else if (commandsList.includes(arg)) {
+        // Find the index of the target user
+        var index = server.authcommands.indexOf(arg);
+        // If found, remove from array
+        if (index > -1) {
+          server.authcommands.splice(index, 1);
+          message.channel.send(`${server.prefix}${arg} removed from authorized commands.`).catch(logSendError);
+        } else {
+          // If not found, add to array
+          server.authcommands.push(arg);
+          message.channel.send(`${server.prefix}${arg} added to authorized commands.`).catch(logSendError);
+        }
+    }
+    else if (safeList.includes(arg)) {message.channel.send(`There's no reason to protect that command.`).catch(logSendError)}
+    else if (protectedList.includes(arg)) {message.channel.send(`That command should not be authorized.`).catch(logSendError)}
+    else {message.channel.send(`"${server.prefix}${arg}" isn't a valid command.`).catch(logSendError)}
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
     return;
   }
 
   // Command to toggle current channel as a suggestion channel
   if(message.content.startsWith(server.prefix + "suggest")) {
-    if(message.author.id !== server.ownerID) {
+    let cmd = "suggest";
+    if(!(message.author.id == server.ownerID || server.authUsers.includes(message.author.id) && server.authcommands.includes(cmd))) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
@@ -132,7 +186,8 @@ client.on("message", (message) => {
 
   // Command to toggle current channel as a voting channel
   if(message.content.startsWith(server.prefix + "voting")) {
-    if(message.author.id !== server.ownerID) {
+    let cmd = "voting";
+    if(!(message.author.id == server.ownerID || server.authUsers.includes(message.author.id) && server.authcommands.includes(cmd))) {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
