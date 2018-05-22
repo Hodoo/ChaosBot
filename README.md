@@ -42,14 +42,16 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 Create a copy of `config-default.json` in the `data` folder and rename it `config.json`
 - Add your bot's API token to the `token` field
 - Add your Discord ID to the `ownerID` field
+- If desired, change the `port` field to your desired port *(Default: 3000)*
 
 
 #### If hosting on Glitch:
+- Don't change `port` in the config
 - Everything should work
+- Set up downtime monitoring (e.g. with Uptime Robot) to prevent sleeping
 
 
 #### If self-hosting:
 - Install [nodejs](https://nodejs.org)
 - Install dependencies
-- Remove the 'Glitch section' from `bot.js`
 - Run `node bot.js`

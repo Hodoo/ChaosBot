@@ -22,21 +22,15 @@ var chanPattern = /<#(\d+)>/;
 var userPattern = /(\d+)>/;
 var emojiPattern = /<:\w+:(\d+)>/g;
 
-// Start of Glitch section to keep app from sleeping, not needed if self-hosting
-// Listen for requests
-var listener = app.listen(process.env.PORT, function () {
+// Listen for requests, to allow monitoring for downtime
+var listener = app.listen(config.port, function () {
   console.log("Listening on port " + listener.address().port);
 });
-// Print received pings to console
+// Print received pings to console and respond with OK status
 app.get("/", (request, response) => {
   console.log(`${Date.now()}: Ping Received`);
   response.sendStatus(200);
 });
-// Ping self every 280 seconds to keep alive
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 280000);
-// End of Glitch section
 
 
 // Bot start
