@@ -44,7 +44,7 @@ client.on("guildCreate", (guild) => {
   console.log(Date.now() + ": JOINED: " + guild.name + " (" + guild.id + ")");
   var newserver = serverdefault;
   newserver.ownerID = guild.ownerID;
-  fs.writeFile(`./data/servers/${guild.id}.json`, JSON.stringify(newserver), (err) => console.error);
+  fs.writeFile(`./data/servers/${guild.id}.json`, JSON.stringify(newserver, null, 2), (err) => console.error);
 });
 
 client.on("message", (message) => {
@@ -72,7 +72,7 @@ client.on("message", (message) => {
     server.prefix = newPrefix;
     message.channel.send(`Prefix changed to: ${server.prefix}`).catch(logSendError);
     // Now we have to save the file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
     return;
   }
 
@@ -146,7 +146,7 @@ client.on("message", (message) => {
     else if (safeList.includes(arg)) {message.channel.send(`There's no reason to protect that command.`).catch(logSendError)}
     else if (protectedList.includes(arg)) {message.channel.send(`That command should not be authorized.`).catch(logSendError)}
     else {message.channel.send(`"${server.prefix}${arg}" isn't a valid command.`).catch(logSendError)}
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
     return;
   }
 
@@ -174,7 +174,7 @@ client.on("message", (message) => {
       message.channel.send(`<#${message.channel.id}> added to suggestion channels list.`).catch(logSendError);
     }
     // Save the server config file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
     return;
   }
 
@@ -202,7 +202,7 @@ client.on("message", (message) => {
       message.channel.send(`<#${message.channel.id}> added to voting channels list.`).catch(logSendError);
     }
     // Save the server config file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server), (err) => console.error);
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
     return;
   }
 
