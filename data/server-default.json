@@ -4,5 +4,9 @@
   "authUsers":[],
   "authcommands":[],
   "votingchannels":[],
-  "suggestchannels":[]
+  "suggestchannels":[],
+  "greetchannels":[],
+  "greetmessages":[],
+  "leavechannels":[],
+  "leavemessages":[]
 }

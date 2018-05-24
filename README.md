@@ -27,6 +27,19 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!version` - Returns the current ChaosBot version
 
+`!welcome/goodbye [command or #channel]`
+  * `list` - returns a numbered list of current welcome or goodbye messages
+  * `add [message]` - adds the message to list of welcome or goodbye messages
+  * `remove [number]` - removes the selected message from the list of welcome or goodbye messages
+  * `[#channel]` - toggles the mentioned channel as a welcome or goodbye channel
+
+ Variables supported by welcome/goodbye messages:
+ * `$mention` - inserts a mention of the user
+ * `$name` - inserts the user's username
+ * `$nick` - inserts the nickname of the user if they have one, otherwise same as `$name`
+ * `$disc` - inserts the user's four-digit discriminator, preceded by the number sign
+ * `$id` - inserts the user's id number
+
 ## Dependencies
 
 [Express](https://expressjs.com/) 4.16.3

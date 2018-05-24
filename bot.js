@@ -11,7 +11,7 @@ var pkginfo = require('pkginfo')(module, 'version');
 var version = module.exports.version;
 
 // List of valid protected commands
-var commandsList = ["prefix","suggest","voting","say"]
+var commandsList = ["prefix","suggest","voting","say","welcome","goodbye"]
 // List of safe commands
 var safeList = ["version"]
 // List of protected commands
@@ -45,6 +45,34 @@ client.on("guildCreate", (guild) => {
   var newserver = serverdefault;
   newserver.ownerID = guild.ownerID;
   fs.writeFile(`./data/servers/${guild.id}.json`, JSON.stringify(newserver, null, 2), (err) => console.error);
+});
+
+client.on('guildMemberAdd', member => {
+  let server = require(`./data/servers/${member.guild.id}.json`);
+  if (server.greetchannels.length && server.greetmessages.length) {
+    var i
+    let channels = server.greetchannels;
+    let randmsg = server.greetmessages[Math.floor(Math.random() * server.greetmessages.length)];
+    let message = replaceVars(member, randmsg);
+    for (i in channels) {
+      member.guild.channels.find('id', channels[i]).send(message);
+    }
+  }
+  return;
+});
+
+client.on('guildMemberRemove', member => {
+  let server = require(`./data/servers/${member.guild.id}.json`);
+  if (server.leavechannels.length && server.leavemessages.length) {
+    var i
+    let channels = server.leavechannels;
+    let randmsg = server.leavemessages[Math.floor(Math.random() * server.leavemessages.length)];
+    let message = replaceVars(member, randmsg);
+    for (i in channels) {
+      member.guild.channels.find('id', channels[i]).send(message);
+    }
+  }
+  return;
 });
 
 client.on("message", (message) => {
@@ -153,6 +181,104 @@ client.on("message", (message) => {
     return;
   }
 
+  // Command to manipulate welcome message
+  if(message.content.startsWith(server.prefix + "welcome")) {
+    let cmd = "welcome";
+    if(!(message.author.id == server.ownerID || server.authUsers.includes(message.author.id) && server.authcommands.includes(cmd))) {
+      message.channel.send("You don't have permission to use that command!").catch(logSendError);
+      return;
+    }
+    let args = message.content.split(" ", 3);
+    // If message starts with a channel mention, add or remove that channel from greetchannels
+    if (args[1].startsWith("<#")) {
+      let target = chanPattern.exec(args[1])[1];
+      // Find the index of the target channel
+      var index = server.greetchannels.indexOf(target);
+      // If found, remove from array
+      if (index > -1) {
+        server.greetchannels.splice(index, 1);
+        message.channel.send(`<#${target}> removed from greeting channels.`).catch(logSendError);
+      } else {
+      // If not found, add to array
+        server.greetchannels.push(target);
+        message.channel.send(`<#${target}> added to greeting channels.`).catch(logSendError);
+      }
+    }
+    else if (args[1].startsWith("list")) {
+      if (server.greetmessages.length > 0) {
+        let list = "";
+        server.greetmessages.forEach(function(content, index) {
+          list += `[${index}]: ${content}\n`;
+        });
+        message.channel.send(`Current welcome messages:\n${list}`).catch(logSendError);
+      } else {message.channel.send(`There are currently no welcome messages.`).catch(logSendError); return;}
+      return;
+    }
+    else if (args[1] === "remove") {
+      if (server.greetmessages.length > args[2] && args[2] > -1) {
+        server.greetmessages.splice(args[2], 1);
+        message.channel.send(`[${args[2]}] was removed from welcome messages.`).catch(logSendError);
+      } else {message.channel.send(`"${args[2]}" is not a valid selection.`).catch(logSendError); return;}
+    }
+    else if (args[1] === "add") {
+      let msg = message.content.slice(server.prefix.length + 12);
+      if (msg === "") {message.channel.send(`No welcome message was provided.`).catch(logSendError); return;};
+      server.greetmessages.push(msg);
+      message.channel.send(`Added welcome message:\n${msg}`).catch(logSendError);
+    }
+    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+    return;
+    }
+
+    // Command to manipulate goodbye message
+    if(message.content.startsWith(server.prefix + "goodbye")) {
+      let cmd = "goodbye";
+      if(!(message.author.id == server.ownerID || server.authUsers.includes(message.author.id) && server.authcommands.includes(cmd))) {
+        message.channel.send("You don't have permission to use that command!").catch(logSendError);
+        return;
+      }
+      let args = message.content.split(" ", 3);
+      // If message starts with a channel mention, add or remove that channel from leavechannels
+      if (args[1].startsWith("<#")) {
+        let target = chanPattern.exec(args[1])[1];
+        // Find the index of the target channel
+        var index = server.leavechannels.indexOf(target);
+        // If found, remove from array
+        if (index > -1) {
+          server.leavechannels.splice(index, 1);
+          message.channel.send(`<#${target}> removed from goodbye channels.`).catch(logSendError);
+        } else {
+        // If not found, add to array
+          server.leavechannels.push(target);
+          message.channel.send(`<#${target}> added to goodbye channels.`).catch(logSendError);
+        }
+      }
+      else if (args[1].startsWith("list")) {
+        if (server.leavemessages.length > 0) {
+          let list = "";
+          server.leavemessages.forEach(function(content, index) {
+            list += `[${index}]: ${content}\n`;
+          });
+          message.channel.send(`Current goodbye messages:\n${list}`).catch(logSendError);
+        } else {message.channel.send(`There are currently no goodbye messages.`).catch(logSendError); return;}
+        return;
+      }
+      else if (args[1] === "remove") {
+        if (server.leavemessages.length > args[2] && args[2] > -1) {
+          server.leavemessages.splice(args[2], 1);
+          message.channel.send(`[${args[2]}] was removed from goodbye messages.`).catch(logSendError);
+        } else {message.channel.send(`"${args[2]}" is not a valid selection.`).catch(logSendError); return;}
+      }
+      else if (args[1] === "add") {
+        let msg = message.content.slice(server.prefix.length + 12);
+        if (msg === "") {message.channel.send(`No goodbye message was provided.`).catch(logSendError); return;};
+        server.leavemessages.push(msg);
+        message.channel.send(`Added goodbye message:\n${msg}`).catch(logSendError);
+      }
+      fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+      return;
+      }
+
   // Command to toggle current channel as a suggestion channel
   if(message.content.startsWith(server.prefix + "suggest")) {
     let cmd = "suggest";
@@ -255,6 +381,15 @@ client.on("message", (message) => {
   };
 
 });
+
+function replaceVars(member, message) {
+    return message
+      .replace(/\$mention/g, `<@${member.id}>`)
+      .replace(/\$nick/g, member.displayName)
+      .replace(/\$name/g, member.user.username)
+      .replace(/\$disc/g, `#${member.user.discriminator}`)
+      .replace(/\$id/g, member.id);
+  };
 
 // Function for RegEx
 function getMatches(string, regex, index) {
