@@ -83,6 +83,7 @@ client.on("message", (message) => {
       message.channel.send("You don't have permission to use that command!").catch(logSendError);
       return;
     }
+    if (message.content.length <= server.prefix.length + cmd.length)  {message.channel.send(`No message was provided.`).catch(logSendError); return;};
     // If message starts with a channel mention, try to send message there
     if (message.content.split(" ", 2)[1].startsWith("<#")) {
       let channel = message.guild.channels.find('id', chanPattern.exec(message.content.split(" ", 2)[1])[1]);
@@ -90,12 +91,14 @@ client.on("message", (message) => {
         message.channel.send("Channel not found.").catch(logSendError);
         return;
       }
-      let newmsg = message.content.slice(27);
+      let newmsg = message.content.slice(server.prefix.length + 26);
+      if (newmsg === "") {message.channel.send(`No message was provided.`).catch(logSendError); return;};
       channel.send(newmsg).catch(logSendError);
     }
     // Otherwise, send message in current channel
     else {
-      let newmsg = message.content.slice(5);
+      let newmsg = message.content.slice(server.prefix.length + 4);
+      if (newmsg === "") {message.channel.send(`No message was provided.`).catch(logSendError); return;};
       message.channel.send(newmsg).catch(logSendError);
     }
     return;
