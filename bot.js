@@ -28,7 +28,7 @@ var listener = app.listen(config.port, function () {
 });
 // Print received pings to console and respond with OK status
 app.get("/", (request, response) => {
-  console.log(`${Date.now()}: Ping Received`);
+//  console.log(`${Date.now()}: Ping Received`);
   response.sendStatus(200);
 });
 
