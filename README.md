@@ -40,14 +40,6 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
  * `$disc` - inserts the user's four-digit discriminator, preceded by the number sign
  * `$id` - inserts the user's id number
 
-## Dependencies
-
-[Express](https://expressjs.com/) 4.16.3
-
-[pkginfo](https://www.npmjs.com/package/pkginfo) 0.4.1
-
-[discord.js](https://discord.js.org/) 11.3.2
-
 
 ## Setup
 
@@ -66,5 +58,5 @@ Create a copy of `config-default.json` in the `data` folder and rename it `confi
 
 #### If self-hosting:
 - Install [nodejs](https://nodejs.org)
-- Install dependencies
+- Install package
 - Run `node bot.js`
