@@ -1,14 +1,17 @@
 // init project
 var express = require('express');
 var app = express();
-const http = require('http');
 const Discord = require("discord.js");
-const fs = require("fs")
 const config = require("./data/config.json");
 const serverdefault = require("./data/server-default.json");
 const client = new Discord.Client();
 var pkginfo = require('pkginfo')(module, 'version');
 var version = module.exports.version;
+
+// Set up Enmap and assign to the client
+const Enmap = require("enmap");
+const EnmapLevel = require("enmap-level");
+Object.assign(client, Enmap.multi(["settings"], EnmapLevel, { dataDir: './data' }));
 
 // List of valid protected commands
 var commandsList = ["prefix","suggest","voting","say","welcome","goodbye"]
@@ -42,13 +45,17 @@ client.on("ready", () => {
 
 client.on("guildCreate", (guild) => {
   console.log(Date.now() + ": JOINED: " + guild.name + " (" + guild.id + ")");
-  var newserver = serverdefault;
-  newserver.ownerID = guild.ownerID;
-  fs.writeFile(`./data/servers/${guild.id}.json`, JSON.stringify(newserver, null, 2), (err) => console.error);
+  let server = serverdefault;
+  server.ownerID = guild.ownerID;
+  client.settings.set(guild.id, server);
+});
+
+client.on("guildDelete", guild => {
+  client.settings.delete(guild.id);
 });
 
 client.on('guildMemberAdd', member => {
-  let server = require(`./data/servers/${member.guild.id}.json`);
+  let server = client.settings.get(member.guild.id);
   if (server.greetchannels.length && server.greetmessages.length) {
     var i
     let channels = server.greetchannels;
@@ -62,7 +69,7 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('guildMemberRemove', member => {
-  let server = require(`./data/servers/${member.guild.id}.json`);
+  let server = client.settings.get(member.guild.id);
   if (server.leavechannels.length && server.leavemessages.length) {
     var i
     let channels = server.leavechannels;
@@ -81,8 +88,8 @@ client.on("message", (message) => {
   console.log(message.content);
 */
 
-  // Get information from server's json
-  let server = require(`./data/servers/${message.guild.id}.json`);
+  // Get information from enmap
+  let server = client.settings.get(message.guild.id);
 
   // Ignore messages from bots
   if (message.author.bot) return;
@@ -99,8 +106,8 @@ client.on("message", (message) => {
     // change the server configuration in memory
     server.prefix = newPrefix;
     message.channel.send(`Prefix changed to: ${server.prefix}`).catch(logSendError);
-    // Now we have to save the file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+    // Save the changes to database
+    client.settings.set(message.guild.id, server);
     return;
   }
 
@@ -177,7 +184,7 @@ client.on("message", (message) => {
     else if (safeList.includes(arg)) {message.channel.send(`There's no reason to protect that command.`).catch(logSendError)}
     else if (protectedList.includes(arg)) {message.channel.send(`That command should not be authorized.`).catch(logSendError)}
     else {message.channel.send(`"${server.prefix}${arg}" isn't a valid command.`).catch(logSendError)}
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+    client.settings.set(message.guild.id, server);
     return;
   }
 
@@ -226,7 +233,7 @@ client.on("message", (message) => {
       server.greetmessages.push(msg);
       message.channel.send(`Added welcome message:\n${msg}`).catch(logSendError);
     }
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+    client.settings.set(message.guild.id, server);
     return;
     }
 
@@ -275,7 +282,7 @@ client.on("message", (message) => {
         server.leavemessages.push(msg);
         message.channel.send(`Added goodbye message:\n${msg}`).catch(logSendError);
       }
-      fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+      client.settings.set(message.guild.id, server);
       return;
       }
 
@@ -302,8 +309,8 @@ client.on("message", (message) => {
       server.suggestchannels.push(message.channel.id);
       message.channel.send(`<#${message.channel.id}> added to suggestion channels list.`).catch(logSendError);
     }
-    // Save the server config file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+    // Save the server config to database
+    client.settings.set(message.guild.id, server);
     return;
   }
 
@@ -330,8 +337,8 @@ client.on("message", (message) => {
       server.votingchannels.push(message.channel.id);
       message.channel.send(`<#${message.channel.id}> added to voting channels list.`).catch(logSendError);
     }
-    // Save the server config file.
-    fs.writeFile(`./data/servers/${message.guild.id}.json`, JSON.stringify(server, null, 2), (err) => console.error);
+    // Save the server config to database
+    client.settings.set(message.guild.id, server);
     return;
   }
 
