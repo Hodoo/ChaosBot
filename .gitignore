@@ -1,4 +1,3 @@
 data/settings/*
-data/servers/*.json
 data/config.json
 watch.json
