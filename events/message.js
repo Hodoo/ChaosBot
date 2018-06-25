@@ -8,6 +8,8 @@ exports.run = (client, message) => {
 
   // Ignore messages from bots
   if (message.author.bot) return;
+  // Ignore DMs
+  if (message.channel.type !=='text') return;
 
   // Command to change server prefix
   if(message.content.startsWith(server.prefix + "prefix")) {
