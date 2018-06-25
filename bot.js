@@ -7,7 +7,7 @@ const serverdefault = require("./data/server-default.json");
 const client = new Discord.Client();
 require("./functions/functions.js")(client);
 var pkginfo = require('pkginfo')(module, 'version');
-var version = module.exports.version;
+client.version = module.exports.version
 
 // Set up Enmap and assign to the client
 const Enmap = require("enmap");
