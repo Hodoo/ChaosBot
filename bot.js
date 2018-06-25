@@ -5,6 +5,7 @@ const Discord = require("discord.js");
 const config = require("./data/config.json");
 const serverdefault = require("./data/server-default.json");
 const client = new Discord.Client();
+require("./functions/functions.js")(client);
 var pkginfo = require('pkginfo')(module, 'version');
 var version = module.exports.version;
 
@@ -20,10 +21,6 @@ var safeList = ["version"]
 // List of protected commands
 var protectedList = ["auth"]
 
-// RegEx  Patterns
-var chanPattern = /<#(\d+)>/;
-var userPattern = /(\d+)>/;
-var emojiPattern = /<:\w+:(\d+)>/g;
 
 // Listen for requests, to allow monitoring for downtime
 var listener = app.listen(config.port, function () {
@@ -389,24 +386,6 @@ client.on("message", (message) => {
 
 });
 
-function replaceVars(member, message) {
-    return message
-      .replace(/\$mention/g, `<@${member.id}>`)
-      .replace(/\$nick/g, member.displayName)
-      .replace(/\$name/g, member.user.username)
-      .replace(/\$disc/g, `#${member.user.discriminator}`)
-      .replace(/\$id/g, member.id);
-  };
 
-// Function for RegEx
-function getMatches(string, regex, index) {
-  index || (index = 1); // default to the first capturing group
-  var matches = [];
-  var match;
-  while (match = regex.exec(string)) {
-    matches.push(match[index]);
-  }
-  return matches;
-};
 
 client.login(config.token);
