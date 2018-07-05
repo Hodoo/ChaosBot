@@ -21,7 +21,7 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!voting` - Toggles the current channel as a voting channel
 
-`!auth [command or @user]` - Toggles whether the mentioned command is usable by authorized users, or whether the mentioned user is an authorized user
+`!auth [command or @role] (1-10)` - Sets the permission level for the mentioned role or command
 
 `!say [(#channel) message]` - Sends your message in the mentioned channel, or the current channel if omitted
 
