@@ -18,7 +18,7 @@ exports.run = (client, server, message, args) => {
   else if (ownerCommands.includes(args[0])) {message.channel.send(`That command can only be used by owners.`)}
   // If first argument is a valid command
   else if (client.settings.get("commandList").includes(`${args[0]}.js`)) {
-    if (args[1] >= 0 && args[1] == 10) {
+    if (args[1] >= 0 && args[1] <= 10) {
       server.commands[args[0]] = args[1];
       message.channel.send(`Authorization level for '${args[0]}' has been set to ${args[1]}.`);
     } else if (!args[1]) { message.channel.send(`Authorization level for '${args[0]}' is currently: ${server.commands[args[0]]}.`);
