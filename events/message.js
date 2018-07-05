@@ -79,4 +79,11 @@ exports.run = (client, message) => {
       .catch(logReactError);
     return;
   };
+
+  function logSendError(reason) {
+    console.log(`${Date.now()}: ERROR: ${message.guild.name}: #${message.channel.name} -- ${reason}, while attempting to send message`);
+  };
+  function logReactError(reason) {
+    console.log(`${Date.now()}: ERROR: ${message.guild.name}: #${message.channel.name} -- ${reason}, while attempting to add reaction`);
+  };
 }
