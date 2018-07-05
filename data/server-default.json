@@ -1,8 +1,8 @@
 {
   "prefix":"!",
   "ownerID":"",
-  "authUsers":[],
-  "authcommands":[],
+  "commands":{"version":0},
+  "perms":{},
   "votingchannels":[],
   "suggestchannels":[],
   "greetchannels":[],

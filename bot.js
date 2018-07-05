@@ -1,6 +1,7 @@
 // init project
 var express = require('express');
 var app = express();
+const fs = require('fs');
 const Discord = require("discord.js");
 const config = require("./data/config.json");
 const client = new Discord.Client();
@@ -13,12 +14,6 @@ const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
 Object.assign(client, Enmap.multi(["settings"], EnmapLevel, { dataDir: './data' }));
 
-// List of valid protected commands
-var commandsList = ["prefix","suggest","voting","say","welcome","goodbye"]
-// List of safe commands
-var safeList = ["version"]
-// List of protected commands
-var protectedList = ["auth"]
 
 
 // Listen for requests, to allow monitoring for downtime
@@ -31,6 +26,9 @@ app.get("/", (request, response) => {
   response.sendStatus(200);
 });
 
+const cmdList = fs.readdirSync("./commands/");
+client.settings.set("commandList", cmdList);
+console.log(`Loaded commands:\n${cmdList}`)
 
 // Bot start
 client.on('ready', () => require(`./events/ready.js`).run(client));
