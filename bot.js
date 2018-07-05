@@ -28,7 +28,7 @@ app.get("/", (request, response) => {
 
 const cmdList = fs.readdirSync("./commands/");
 client.settings.set("commandList", cmdList);
-console.log(`Loaded commands:\n${cmdList}`)
+//console.log(`Loaded commands:\n${cmdList}`)
 
 // Bot start
 client.on('ready', () => require(`./events/ready.js`).run(client));
