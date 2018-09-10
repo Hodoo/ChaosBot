@@ -33,7 +33,13 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
   * `remove [number]` - removes the selected message from the list of welcome or goodbye messages
   * `[#channel]` - toggles the mentioned channel as a welcome or goodbye channel
 
- Variables supported by welcome/goodbye messages:
+`!role [command or #channel]`
+  * `list [gain/loss]` - returns a numbered list of current role gain or loss announcements
+  * `add [@role] [gain/loss] [message]` - adds the message as an announcement for gaining or losing the mentioned role
+  * `remove [gain/loss] [number]` - removes the selected announcement from the chosen list
+  * `[#channel]` - toggles the mentioned channel as a role announcement channel
+
+ Variables supported by welcome/goodbye messages and role announcements:
  * `$mention` - inserts a mention of the user
  * `$name` - inserts the user's username
  * `$nick` - inserts the nickname of the user if they have one, otherwise same as `$name`
