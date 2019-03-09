@@ -1,5 +1,6 @@
 {
   "prefix":"!",
+  "configversion":"",
   "ownerID":"",
   "commands":{"version":0},
   "perms":{},

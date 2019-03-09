@@ -12,6 +12,14 @@ exports.run = (client, message) => {
   // Get information from enmap
   let server = client.settings.get(message.guild.id);
 
+  // Update server settings, if not newest version
+  if (!server.configversion || server.configversion !== client.version) {
+    let serverdefault = require("../data/server-default.json");
+    server = Object.assign(serverdefault, server);
+    server.configversion = client.version;
+    client.settings.set(message.guild.id, server);
+    console.log(`${Date.now()}: ${message.guild.name} (${message.guild.id}) config has been updated to newest version`)
+  }
 
   if (message.content.startsWith(server.prefix)) {
     // Get command and arguments from message
