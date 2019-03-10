@@ -11,10 +11,12 @@ client.version = module.exports.version
 
 // Set up Enmap and assign to the client
 const Enmap = require("enmap");
-const EnmapLevel = require("enmap-level");
-Object.assign(client, Enmap.multi(["settings"], EnmapLevel, { dataDir: './data' }));
+Object.assign(client, Enmap.multi(["settings"]));
 
-
+// Await database ready
+(async function() {
+  await Enmap.defer;
+  console.log("Database is ready");
 
 // Listen for requests, to allow monitoring for downtime
 var listener = app.listen(config.port, function () {
@@ -45,3 +47,4 @@ client.on('guildMemberUpdate', (...args) => require(`./events/guildMemberUpdate.
 
 
 client.login(config.token);
+}());
