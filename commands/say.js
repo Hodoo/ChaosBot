@@ -2,7 +2,7 @@
 exports.run = (client, server, message, args) => {
   if (!args[0]) {message.channel.send(`No message was provided.`); return;}
   if (args[0].startsWith("<#")) {
-    let channel = message.guild.channels.find('id', client.regex.channel.exec(args[0])[1]);
+    let channel = message.guild.channels.get(client.regex.channel.exec(args[0])[1]);
     if (!channel) {
       message.channel.send("Channel not found.");
       return;

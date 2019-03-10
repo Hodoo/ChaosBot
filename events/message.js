@@ -78,8 +78,8 @@ exports.run = (client, message) => {
   // Check if posted in a suggestion channel
   if (server.suggestchannels.includes(message.channel.id)) {
   // Get server's :upvote: and :downvote: emojis
-    const upvote = client.emojis.find("name", "upvote");
-    const downvote = client.emojis.find("name", "downvote");
+    const upvote = client.emojis.find(emoji => emoji.name === "upvote");
+    const downvote = client.emojis.find(emoji => emoji.name === "downvote");
   // React with said emojis
     message.react(upvote.id)
       .then( () => message.react(downvote.id) )

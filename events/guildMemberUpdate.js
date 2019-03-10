@@ -11,7 +11,7 @@ exports.run = (client, oldMember, newMember) => {
       var i;
       let message = client.replaceVars(newMember, server.gainMessages[roleGains[0].id]);
       for (i in channels) {
-        newMember.guild.channels.find('id', channels[i]).send(message);
+        newMember.guild.channels.get(channels[i]).send(message);
       }
     }
   } else if (roleLosses.length > 0) {
@@ -19,7 +19,7 @@ exports.run = (client, oldMember, newMember) => {
       var i;
       let message = client.replaceVars(newMember, server.lossMessages[roleLosses[0].id]);
       for (i in channels) {
-        newMember.guild.channels.find('id', channels[i]).send(message);
+        newMember.guild.channels.get(channels[i]).send(message);
       }
     };
   };
