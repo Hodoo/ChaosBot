@@ -1,5 +1,32 @@
 exports.run = (client) => {
+  let lastGuilds = Array.from(client.settings.keys());
+  lastGuilds.splice(lastGuilds.indexOf('commandList'), 1);
+  if (lastGuilds.indexOf('lastVersion') > -1) {
+    lastGuilds.splice(lastGuilds.indexOf('lastVersion'), 1);
+  }
   let currentGuilds = Array.from(client.guilds.keys());
+
+  let guildGains = currentGuilds.filter(x => !lastGuilds.includes(x));
+  let guildLosses = lastGuilds.filter(x => !currentGuilds.includes(x));
+
+  // If any servers have been gained or lost since last start, add/remove them
+  if (guildGains.length > 0) {
+    let i;
+    let server = require("../data/server-default.json");
+    for (i in guildGains) {
+      let guild = client.guilds.get(guildGains[i])
+      server.ownerID = guild.ownerID;
+      client.settings.set(guild.id, server);
+      console.log(`${guild.name} (${guild.id}) was missing and has been added`)
+    };
+  };
+  if (guildLosses.length > 0) {
+    let i;
+    for (i in guildLosses) {
+      client.settings.delete(guildLosses[i]);
+      console.log(`${guildLosses[i]} no longer exists and has been removed`)
+    };
+  };
 
   // Update server settings, if not newest version
   if (!client.settings.get("lastVersion") || client.settings.get("lastVersion") !== client.version) {
