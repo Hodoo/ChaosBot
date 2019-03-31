@@ -46,6 +46,11 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
  * `$disc` - inserts the user's four-digit discriminator, preceded by the number sign
  * `$id` - inserts the user's id number
 
+ `!roletimer [command or #channel]`
+   * `list` - returns a numbered list of current role timers
+   * `add [@role] [time] ([#channel] [message])` - sets up a daily time (in UTC, 24h format) to remove the mentioned role from all members
+   * `remove [number]` - removes the selected role timer from the list
+
 
 ## Setup
 

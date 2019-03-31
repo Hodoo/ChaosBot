@@ -47,4 +47,6 @@ client.on('guildMemberUpdate', (...args) => require(`./events/guildMemberUpdate.
 
 
 client.login(config.token);
+
+setInterval(client.runTimers, 5000);
 }());
