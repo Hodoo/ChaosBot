@@ -37,6 +37,7 @@ exports.run = (client) => {
       let guild = client.guilds.get(currentGuilds[i]);
       let server = client.settings.get(currentGuilds[i]);
       server = Object.assign(serverdefault, server);
+      client.settings.set(currentGuilds[i], server);
       console.log(`${guild.name} (${guild.id}) settings have been updated to newest version`);
     }
     client.settings.set("lastVersion", client.version);
