@@ -38,10 +38,12 @@ module.exports = (client) => {
       for (x in server.roletimers) {
         if (Date.now() > server.roletimers[x][0]) {
           let role = guild.roles.get(server.roletimers[x][1]);
-          role.members.forEach(member => {member.removeRole(role.id)});
-          if (server.roletimers[x][2] && server.roletimers[x][3]) {
-            guild.channels.get(server.roletimers[x][2]).send(server.roletimers[x][3]);
-          };
+          if (role.members.size > 0) {
+            role.members.forEach(member => {member.removeRole(role.id)});
+            if (server.roletimers[x][2] && server.roletimers[x][3]) {
+              guild.channels.get(server.roletimers[x][2]).send(server.roletimers[x][3]);
+            };
+          }
           server.roletimers[x][0] += 86400000
           client.settings.set(currentGuilds[i], server);
         }
