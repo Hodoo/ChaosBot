@@ -44,7 +44,7 @@ module.exports = (client) => {
               guild.channels.get(server.roletimers[x][2]).send(server.roletimers[x][3]);
             };
           }
-          server.roletimers[x][0] += 86400000
+          server.roletimers[x][0] += Math.ceil((Date.now()-server.roletimers[x][0])/86400000)*86400000;
           client.settings.set(currentGuilds[i], server);
         }
       }
