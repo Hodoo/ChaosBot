@@ -4,14 +4,25 @@ exports.run = (client, message) => {
 */
 
 
-  // Ignore messages from bots
-  if (message.author.bot) return;
+
   // Ignore DMs
   if (message.channel.type !=='text') return;
 
   // Get information from enmap
   let server = client.settings.get(message.guild.id);
 
+  // Check if posted in a webhook channel
+  if (server.singlechannels.includes(message.channel.id)) {
+    async function clear() {
+      var fetched = await msg.channel.fetchMessages({before: message.id});
+      msg.channel.bulkDelete(fetched);
+    }
+    clear();
+    return;
+  };
+
+  // Ignore messages from bots
+  if (message.author.bot) return;
 
   if (message.content.startsWith(server.prefix)) {
     // Get command and arguments from message

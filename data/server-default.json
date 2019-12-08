@@ -9,6 +9,7 @@
   "votingchannels":[],
   "suggestchannels":[],
   "roletimers":[],
+  "singlechannels":[],
   "greetchannels":[],
   "greetmessages":[],
   "leavechannels":[],
