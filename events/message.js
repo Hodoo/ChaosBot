@@ -14,8 +14,8 @@ exports.run = (client, message) => {
   // Check if posted in a webhook channel
   if (server.singlechannels.includes(message.channel.id)) {
     async function clear() {
-      var fetched = await msg.channel.fetchMessages({before: message.id});
-      msg.channel.bulkDelete(fetched);
+      var fetched = await message.channel.fetchMessages({before: message.id});
+      message.channel.bulkDelete(fetched);
     }
     clear();
     return;
