@@ -11,18 +11,6 @@ exports.run = (client, message) => {
   // Get information from enmap
   let server = client.settings.get(message.guild.id);
 
-  // Check if posted in a webhook channel
-  if (server.singlechannels.includes(message.channel.id)) {
-    async function clear() {
-      var fetched = await message.channel.fetchMessages({before: message.id});
-      message.channel.bulkDelete(fetched);
-    }
-    clear();
-    return;
-  };
-
-  // Ignore messages from bots
-  if (message.author.bot) return;
 
   if (message.content.startsWith(server.prefix)) {
     // Get command and arguments from message
@@ -57,6 +45,15 @@ exports.run = (client, message) => {
   }
 
 
+  // Check if posted in a webhook channel
+  if (server.singlechannels.includes(message.channel.id)) {
+    async function clear() {
+      var fetched = await message.channel.fetchMessages({before: message.id});
+      message.channel.bulkDelete(fetched);
+    }
+    clear();
+    return;
+  };
 
 
   // Check if posted in a voting channel
