@@ -90,7 +90,7 @@ exports.run = (client, server, message, args) => {
 
       var embed = new Discord.RichEmbed()
         .setColor("#f712ff")
-        .setAuthor(`${message.member.nickname}'s ${coat} L${level}`)
+        .setAuthor(`${message.member.displayName}'s ${coat} L${level}`)
         .setThumbnail(`https://bdocodex.com/items/new_ui_common_forlua/window/stable/horse_${coats[coat][2]}.png`)
         .setDescription("Tier " +tier+" horses gain "+ranges[tier][0]/10+"-"+ranges[tier][1]/10+" each level ("+Number.parseFloat(average/10).toFixed(2)+" average)")
         .addField("Speed ("+Number.parseFloat(speed/10).toFixed(1)+")", "Gain: "+Number.parseFloat(speedGain/10).toFixed(1)+" ("+Number.parseFloat((speedGain/(level-1))/10).toFixed(2)+" per level)"+speedProjection)
