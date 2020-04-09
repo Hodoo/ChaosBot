@@ -50,10 +50,10 @@ exports.run = (client, server, message, args) => {
     };
 
     const ranges = {
-      "tier9":[1,13],
-      "tier8":[1,12],
-      "tier7":[1,11],
-      "tier6":[1,10]
+      "9":[1,13],
+      "8":[1,12],
+      "7":[1,11],
+      "6":[1,10]
     };
 
     if (coats[args[0].toUpperCase()]) {
