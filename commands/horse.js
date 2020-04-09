@@ -88,17 +88,15 @@ exports.run = (client, server, message, args) => {
         var brakeProjection = "";
       };
 
-      var embed = new Discord.MessageEmbed()
+      var embed = new Discord.RichEmbed()
         .setColor("#f712ff")
         .setAuthor(`${message.member.nickname}'s ${coat} L${level}`)
         .setThumbnail(`https://bdocodex.com/items/new_ui_common_forlua/window/stable/horse_${coats[coat][2]}.png`)
         .setDescription("Tier " +tier+" horses gain "+ranges[tier][0]/10+"-"+ranges[tier][1]/10+" each level ("+Number.parseFloat(average/10).toFixed(2)+" average)")
-        .addFields(
-          { name: "Speed ("+Number.parseFloat(speed/10).toFixed(1)+")", value: "Gain: "+Number.parseFloat(speedGain/10).toFixed(1)+" ("+Number.parseFloat((speedGain/(level-1))/10).toFixed(2)+" per level)"+speedProjection},
-          { name: "Accel ("+Number.parseFloat(accel/10).toFixed(1)+")", value: "Gain: "+Number.parseFloat(accelGain/10).toFixed(1)+" ("+Number.parseFloat((accelGain/(level-1))/10).toFixed(2)+" per level)"+accelProjection},
-          { name: "Turn ("+Number.parseFloat(turn/10).toFixed(1)+")", value: "Gain: "+Number.parseFloat(turnGain/10).toFixed(1)+" ("+Number.parseFloat((turnGain/(level-1))/10).toFixed(2)+" per level)"+turnProjection},
-          { name: "Brake ("+Number.parseFloat(brake/10).toFixed(1)+")", value: "Gain: "+Number.parseFloat(brakeGain/10).toFixed(1)+" ("+Number.parseFloat((brakeGain/(level-1))/10).toFixed(2)+" per level)"+brakeProjection}
-        );
+        .addField("Speed ("+Number.parseFloat(speed/10).toFixed(1)+")", "Gain: "+Number.parseFloat(speedGain/10).toFixed(1)+" ("+Number.parseFloat((speedGain/(level-1))/10).toFixed(2)+" per level)"+speedProjection)
+        .addField("Accel ("+Number.parseFloat(accel/10).toFixed(1)+")", "Gain: "+Number.parseFloat(accelGain/10).toFixed(1)+" ("+Number.parseFloat((accelGain/(level-1))/10).toFixed(2)+" per level)"+accelProjection)
+        .addField("Turn ("+Number.parseFloat(turn/10).toFixed(1)+")", "Gain: "+Number.parseFloat(turnGain/10).toFixed(1)+" ("+Number.parseFloat((turnGain/(level-1))/10).toFixed(2)+" per level)"+turnProjection)
+        .addField("Brake ("+Number.parseFloat(brake/10).toFixed(1)+")", "Gain: "+Number.parseFloat(brakeGain/10).toFixed(1)+" ("+Number.parseFloat((brakeGain/(level-1))/10).toFixed(2)+" per level)"+brakeProjection)
 
       message.channel.send(embed)
 
