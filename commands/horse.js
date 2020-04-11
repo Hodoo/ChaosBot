@@ -1,4 +1,4 @@
-// Make the bot say whatever you want, wherever you want
+// Black Desert Online - Horse stat projection
 exports.run = (client, server, message, args) => {
   const Discord = require('discord.js');
 
