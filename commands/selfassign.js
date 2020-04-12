@@ -46,6 +46,7 @@ exports.run = (client, server, message, args) => {
       var newmsg = header +"\n\n";
       for (const property in assigns) {
         let emote = client.emojis.get(property);
+        console.log(property);
         let role = message.guild.roles.get(assigns[property]);
         reactions.push(property);
         newmsg += `${emote} - ${role}\n`;
