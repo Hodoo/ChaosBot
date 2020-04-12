@@ -43,9 +43,9 @@ exports.run = (client, server, message, args) => {
       for (const property in assigns) {
         let emote = client.emojis.get(property);
         let role = message.guild.roles.get(assigns[property]);
-        newmsg =+ `${emote} - ${role}\n`;
+        newmsg += `${emote} - ${role}\n`;
       }
-      newmsg =+ "\n"+footer;
+      newmsg += "\n"+footer;
       channel.send(newmsg);
     } else {message.channel.send("No channel provided."); return;}
   }
