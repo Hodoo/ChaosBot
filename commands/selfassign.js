@@ -2,11 +2,12 @@
 exports.run = (client, server, message, args) => {
   if (!args[0]) {message.channel.send(`No input was provided.`); return;}
   if (args[0].startsWith("new")) {
+    if (args.length < 3) {message.channel.send(`Not enough arguments.`); return;};
     if (args[1] && args[1].startsWith("<#")) {
       var channel = message.guild.channels.get(client.regex.channel.exec(args[1])[1]);
       if (!channel) {message.channel.send("Channel not found."); return;}
       var newArgs = args.slice(2).join(" ").split(/ \| /g);
-
+      if (newArgs.length < 2) {message.channel.send(`Not enough arguments.`); return;};
       if (newArgs[0].startsWith("<@&")) {
         var roles = client.getMatches(newArgs[0], client.regex.user, 1);
         var i;
