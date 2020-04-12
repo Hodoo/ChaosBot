@@ -24,7 +24,7 @@ exports.run = (client, server, message, args) => {
 
       var assigns = {};
 
-      for (i = 0; i < assignList.length; i += 2) {
+      for (i = 0; i < assignList.length; i =+ 2) {
         if (!assignList[i+1]) {message.channel.send(`Unmatched emote.`); return};
         let emoteID = client.regex.emoji.exec(assignList[i])[1];
         let emote = client.emojis.get(emoteID);
