@@ -20,7 +20,7 @@ exports.run = (client, server, message, args) => {
 
       var header = newArgs[0];
 
-      var assignList = newargs[1].trim().split(/ +/g);
+      var assignList = newArgs[1].trim().split(/ +/g);
 
       var assigns = {};
 
