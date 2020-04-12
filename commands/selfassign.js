@@ -47,7 +47,6 @@ exports.run = (client, server, message, args) => {
       newmsg =+ "\n"+footer;
       channel.send(newmsg);
     } else {message.channel.send("No channel provided."); return;}
-    }
   }
 }
 
