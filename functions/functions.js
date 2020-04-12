@@ -5,6 +5,7 @@ module.exports = (client) => {
   client.regex.channel = /<#(\d+)>/;
   client.regex.user = /(\d+)>/;
   client.regex.emoji = /<:\w+:(\d+)>/g;
+  client.regex.emojisingle = /<:\w+:(\d+)>/;
 
 // Function to replace variables in messages
   client.replaceVars = function(member, message) {
