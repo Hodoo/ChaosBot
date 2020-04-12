@@ -34,7 +34,7 @@ exports.run = (client, server, message, args) => {
         let roleID = client.regex.user.exec(assignList[i+1])[1];
         let role = message.guild.roles.get(roleID);
         if (!role) {message.channel.send(`One or more assign roles are invalid.`); return};
-        assigns[emote] = roleID;
+        assigns[emoteID] = roleID;
       };
 
       if (newArgs[2]) {
