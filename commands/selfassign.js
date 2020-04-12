@@ -26,9 +26,7 @@ exports.run = (client, server, message, args) => {
 
       for (i = 0; i < assignList.length; i += 2) {
         if (!assignList[i+1]) {message.channel.send(`Unmatched emote.`); return};
-        console.log(assignList[i]);
         let emoteID = client.regex.emoji.exec(assignList[i])[1];
-        console.log(emoteID);
         let emote = client.emojis.get(emoteID);
         if (!emote) {message.channel.send(`One or more assign emotes are invalid or inaccessible.`); return};
         let roleID = client.regex.user.exec(assignList[i+1])[1];
@@ -46,7 +44,6 @@ exports.run = (client, server, message, args) => {
       var newmsg = header +"\n\n";
       for (const property in assigns) {
         let emote = client.emojis.get(property);
-        console.log(property);
         let role = message.guild.roles.get(assigns[property]);
         reactions.push(property);
         newmsg += `${emote} - ${role}\n`;
