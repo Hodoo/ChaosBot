@@ -6,8 +6,8 @@ exports.run = (client, message) => {
   // Get information from enmap
   let server = client.settings.get(message.guild.id);
 
-  if (Object.keys(server.selfassigns).includes(message.id.toString())) {
-    delete server.selfassigns[message.id.toString()];
+  if (Object.keys(server.selfassigns).includes(message.id)) {
+    delete server.selfassigns[message.id];
     console.log(Object.keys(server.selfassigns).toString()); // Testing line
     client.settings.set(message.guild.id, server);
   };
