@@ -13,9 +13,7 @@ exports.run = (client, server, message, args) => {
         var roles = client.getMatches(newArgs[0], client.regex.users, 1);
         var i;
         for (i = 0; i < roles.length; i++) {
-          console.log(`Still working ${i}a`);
           let role = message.guild.roles.get(roles[i]);
-          console.log(`Still working ${i}b`);
           if (!role) {message.channel.send(`One or more required roles are invalid.`); return};
         };
         newArgs = newArgs.slice(1);
@@ -51,7 +49,7 @@ exports.run = (client, server, message, args) => {
         newmsg += `${emote} - ${role}\n`;
       }
       newmsg += "\n"+footer;
-      
+
       var embed = new Discord.RichEmbed()
         .setColor("#f712ff")
         .setTitle(header)
