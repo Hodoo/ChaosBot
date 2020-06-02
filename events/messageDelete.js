@@ -9,7 +9,6 @@ exports.run = (client, message) => {
 
   if (Object.keys(server.selfassigns).includes(message.id)) {
     delete server.selfassigns[message.id];
-    console.log("A self-assign message was removed");
     client.settings.set(message.guild.id, server);
   };
 
