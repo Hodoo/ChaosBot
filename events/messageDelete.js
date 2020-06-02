@@ -8,6 +8,7 @@ exports.run = (client, message) => {
 
   if (server.selfassign.hasOwnProperty(message.id) {
     delete server.selfassign[message.id];
+    console.log(Object.keys(server.selfassign).toString()); // Testing line
     client.settings.set(message.guild.id, server);
   };
 
