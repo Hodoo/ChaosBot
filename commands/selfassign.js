@@ -9,7 +9,7 @@ exports.run = (client, server, message, args) => {
       var newArgs = args.slice(2).join(" ").split(/ \| /g);
       if (newArgs.length < 2) {message.channel.send(`Not enough arguments.`); return;};
       if (newArgs[0].startsWith("<@&")) {
-        var roles = client.getMatches(newArgs[0], client.regex.user, 1);
+        var roles = client.getMatches(newArgs[0], client.regex.users, 1);
         var i;
         for (i = 0; i < roles.length; i++) {
           console.log(`Still working ${i}a`);
