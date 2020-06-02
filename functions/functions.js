@@ -4,6 +4,7 @@ module.exports = (client) => {
   client.regex = []
   client.regex.channel = /<#(\d+)>/;
   client.regex.user = /(\d+)>/;
+  client.regex.users = /(\d+)>/g;
   client.regex.emoji = /<:\w+:(\d+)>/g;
   client.regex.emojisingle = /<:\w+:(\d+)>/;
 
