@@ -51,8 +51,8 @@ exports.run = (client, server, message, args) => {
       newmsg += "\n"+footer;
       channel.send(newmsg).then(sentMsg => {
         reactions.forEach(reactEmote => sentMsg.react(reactEmote));
+        server.selfassigns[sentMsg.id] = {"header":header, "roles":roles,"assigns":assigns,"footer":footer};
       })
-      server.selfassigns[sentMsg.id] = {"header":header, "roles":roles,"assigns":assigns,"footer":footer};
       console.log(Object.keys(server.selfassigns).toString()); // Testing line
       client.settings.set(message.guild.id, server);
       return;
