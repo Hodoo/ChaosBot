@@ -1,5 +1,6 @@
 // Create and manage reaction-based self-assign roles
 exports.run = (client, server, message, args) => {
+  const Discord = require('discord.js');
   if (!args[0]) {message.channel.send(`No input was provided.`); return;}
   if (args[0].startsWith("new")) {
     if (args.length < 3) {message.channel.send(`Not enough arguments.`); return;};
