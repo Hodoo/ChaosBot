@@ -2,6 +2,8 @@ exports.run = (client, messageReaction, user, state) => {
 
   // Ignore DMs
   if (messageReaction.message.channel.type !=='text') return;
+  // Ignore Bots
+  if (user.bot) return;
 
   // Get information from enmap
   let server = client.settings.get(messageReaction.message.guild.id);
