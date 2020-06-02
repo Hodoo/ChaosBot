@@ -47,6 +47,10 @@ client.on('messageDelete', message => require(`./events/messageDelete.js`).run(c
 
 client.on('guildMemberUpdate', (...args) => require(`./events/guildMemberUpdate.js`).run(client, ...args));
 
+client.on('messageReactionAdd', (reaction, user) => require(`./events/messageReaction.js`).run(client, reaction, user, "Add"));
+client.on('messageReactionRemove', (reaction, user) => require(`./events/messageReaction.js`).run(client, reaction, user, "Remove"));
+
+
 
 client.login(config.token);
 
