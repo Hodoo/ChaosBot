@@ -75,7 +75,7 @@ client.on('raw', packet => {
       });
     } else if (packet.t === 'MESSAGE_DELETE') {
       if (!packet.d.guild_id) return;
-      const message = {"id":packet.d.id,"guild":{"id":packet.d.guild_id}}
+      const message = {"id":packet.d.id,"guild":{"id":packet.d.guild_id},"channel":{"type":"text"}}
       client.emit('messageDelete', message);
     }
 });
