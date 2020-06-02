@@ -42,7 +42,7 @@ exports.run = (client, server, message, args) => {
 
       var reactions = [];
 
-      var newmsg = header +"\n\n";
+      var newmsg = "\n";
       for (const property in assigns) {
         let emote = client.emojis.get(property);
         let role = message.guild.roles.get(assigns[property]);
@@ -50,7 +50,13 @@ exports.run = (client, server, message, args) => {
         newmsg += `${emote} - ${role}\n`;
       }
       newmsg += "\n"+footer;
-      channel.send(newmsg).then(sentMsg => {
+      
+      var embed = new Discord.RichEmbed()
+        .setColor("#f712ff")
+        .setTitle(header)
+        .setDescription(newmsg)
+
+      channel.send(embed).then(sentMsg => {
         reactions.forEach(reactEmote => sentMsg.react(reactEmote));
         server.selfassigns[sentMsg.id] = {"header":header, "roles":roles,"assigns":assigns,"footer":footer};
         client.settings.set(message.guild.id, server);
