@@ -49,7 +49,9 @@ exports.run = (client, server, message, args) => {
         newmsg += `${emote} - ${role}\n`;
       }
       newmsg += "\n"+footer;
-      channel.send(newmsg)
+      channel.send(newmsg).then(sentMsg => {
+        sentMsg.react("👍")
+      })
     } else {message.channel.send("No channel provided."); return;}
   }
 }
