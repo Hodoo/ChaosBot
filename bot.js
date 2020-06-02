@@ -43,6 +43,8 @@ client.on('guildMemberRemove', member => require(`./events/guildMemberRemove.js`
 
 client.on('message', message => require(`./events/message.js`).run(client, message));
 
+client.on('messageDelete', message => require(`./events/messageDelete.js`).run(client, message));
+
 client.on('guildMemberUpdate', (...args) => require(`./events/guildMemberUpdate.js`).run(client, ...args));
 
 
