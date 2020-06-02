@@ -50,7 +50,7 @@ exports.run = (client, server, message, args) => {
       }
       newmsg += "\n"+footer;
       channel.send(newmsg).then(sentMsg => {
-        sentMsg.react("👍")
+        sentMsg.react(reactions[0])
       })
     } else {message.channel.send("No channel provided."); return;}
   }
