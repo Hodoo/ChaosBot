@@ -80,8 +80,8 @@ exports.run = (client, server, message, args) => {
           m.delete();
           message.channel.send(`Self-assign message ${args[1]} deleted and removed from database.`);
         } else {message.channel.send(`Self-assign associated with ${args[1]} removed from database.`); return;}
-      } else {message.channel.send(`Message id not found in database.`); return;};
-    }
+      })
+    } else {message.channel.send(`Message id not found in database.`); return;};
   }
   }
 
