@@ -1,6 +1,13 @@
 // Create and manage reaction-based self-assign roles
 exports.run = (client, server, message, args) => {
   const Discord = require('discord.js');
+  async function findMessage(message, ID) {
+    let channels = message.guild.channels.filter(c => c.type == 'text').array();
+    for (let current of channels) {
+      let target = await current.fetchMessage(ID);
+      if (target) return target;
+    }
+  }
   if (!args[0]) {message.channel.send(`No input was provided.`); return;}
   if (args[0].startsWith("new")) {
     if (args.length < 3) {message.channel.send(`Not enough arguments.`); return;};
@@ -68,7 +75,7 @@ exports.run = (client, server, message, args) => {
     if (Object.keys(server.selfassigns).includes(args[1])) {
       delete server.selfassigns[args[1]];
       client.settings.set(message.guild.id, server);
-      let m = await client.findMessage(message.guild, args[1]);
+      let m = await findMessage(message.guild, args[1]);
       if (m) {
         m.delete();
         message.channel.send(`Self-assign message ${args[1]} deleted and removed from database.`);

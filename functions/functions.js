@@ -29,14 +29,6 @@ module.exports = (client) => {
     return matches;
   };
 
-  // Function to search all channels for a message id
-  async function client.findMessage(guild, id) {
-  let channels = guild.channels.filter(c => c.type == 'text').array();
-    for (let current of channels) {
-      let target = await current.fetchMessage(id);
-      if (target) return target;
-    }
-  };
 
 // Function to iterate through timers
   client.runTimers = function() {
