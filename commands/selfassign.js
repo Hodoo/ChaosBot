@@ -1,10 +1,10 @@
 // Create and manage reaction-based self-assign roles
 exports.run = (client, server, message, args) => {
   const Discord = require('discord.js');
-  async function findMessage(message, ID) {
-    let channels = message.guild.channels.filter(c => c.type == 'text').array();
+  async function findMessage(guild, id) {
+    let channels = guild.channels.filter(c => c.type == 'text').array();
     for (let current of channels) {
-      let target = await current.fetchMessage(ID);
+      let target = await current.fetchMessage(id);
       if (target) return target;
     }
   }
