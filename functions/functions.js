@@ -30,7 +30,7 @@ module.exports = (client) => {
   };
 
   // Function to search all channels for a message id
-  client.findMessage async function(guild, id) {
+  async function client.findMessage(guild, id) {
   let channels = guild.channels.filter(c => c.type == 'text').array();
     for (let current of channels) {
       let target = await current.fetchMessage(id);
