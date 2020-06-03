@@ -83,8 +83,4 @@ exports.run = (client, server, message, args) => {
       })
     } else {message.channel.send(`Message id not found in database.`); return;};
   }
-  }
-
 }
-}
-
