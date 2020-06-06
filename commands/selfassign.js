@@ -57,7 +57,7 @@ exports.run = (client, server, message, args) => {
 
       channel.send(embed).then(sentMsg => {
         reactions.forEach(reactEmote => sentMsg.react(reactEmote));
-        server.selfassigns[sentMsg.id] = {"header":header, "roles":roles,"assigns":assigns,"footer":footer};
+        server.selfassigns[sentMsg.id] = {"channel":channel.id, "header":header, "roles":roles,"assigns":assigns,"footer":footer};
         client.settings.set(message.guild.id, server);
       })
       return;
