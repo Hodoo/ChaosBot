@@ -63,6 +63,7 @@ exports.run = (client, server, message, args) => {
       return;
     } else {message.channel.send("No channel provided."); return;}
   }
+  if (args[0].startsWith("delete")) {
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
     if (Object.keys(server.selfassigns).includes(args[1])) {
       var channel = message.guild.channels.get(server.selfassigns[args[1]]["channel"]);
