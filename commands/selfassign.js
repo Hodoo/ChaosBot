@@ -66,9 +66,15 @@ exports.run = (client, server, message, args) => {
   if (args[0].startsWith("delete")) {
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
     if (Object.keys(server.selfassigns).includes(args[1])) {
+      var channel = message.guild.channels.get(selfassigns[args[1]]["channel"]);
+      if (channel) {
+        channel.fetchMessage(args[1])
+          .then(m => m.delete())
+          .catch(console.error);
+        message.channel.send(`Self-assign message deleted.`)
+      } else {message.channel.send(`Unfound self-assign entry ${args[1]} removed from database.`)}
       delete server.selfassigns[args[1]];
       client.settings.set(message.guild.id, server);
-      message.channel.send(`Self-assign associated with ${args[1]} removed from database.`)
     } else {message.channel.send(`Message id not found in database.`); return;};
   }
 }
