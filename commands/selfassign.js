@@ -65,11 +65,12 @@ exports.run = (client, server, message, args) => {
   }
   if (args[0].startsWith("delete")) {
     if (args[1] == "all") {
-      console.log(Object.keys(server.selfassigns).toString());
+      console.log("Before: " + Object.keys(server.selfassigns).toString());
       for (let entry in server.selfassigns) {
         delete server.selfassigns[entry];
       }
-      console.log(Object.keys(server.selfassigns).toString());
+      console.log("After: " + Object.keys(server.selfassigns).toString());
+      client.settings.set(message.guild.id, server);
       return;
     }
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
