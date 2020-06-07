@@ -75,7 +75,7 @@ exports.run = (client, server, message, args) => {
     }
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
     if (Object.keys(server.selfassigns).includes(args[1])) {
-      var channel = message.guild.channels.get(selfassigns[args[1]]["channel"]);
+      var channel = message.guild.channels.get(server.selfassigns[args[1]]["channel"]);
       if (channel) {
         channel.fetchMessage(args[1])
           .then(m => m.delete())
