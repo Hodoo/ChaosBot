@@ -59,6 +59,7 @@ exports.run = (client, server, message, args) => {
         reactions.forEach(reactEmote => sentMsg.react(reactEmote));
         server.selfassigns[sentMsg.id] = {"channel":channel.id, "header":header, "roles":roles,"assigns":assigns,"footer":footer};
         client.settings.set(message.guild.id, server);
+        console.log(Object.keys(sentMsg.reactions).toString())
       })
       return;
     } else {message.channel.send("No channel provided."); return;}
