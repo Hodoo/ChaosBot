@@ -143,6 +143,8 @@ exports.run = (client, server, message, args) => {
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
               var reaction = m.reactions.get(remEmote)
+              console.log(reaction.emoji.name)
+              console.log(Array.from(reaction.users.values()).toString())
               for (const user in reaction.users.values()) {
                 reaction.remove(user);
               }
