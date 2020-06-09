@@ -77,4 +77,68 @@ exports.run = (client, server, message, args) => {
       client.settings.set(message.guild.id, server);
     } else {message.channel.send(`Message id not found in database.`); return;};
   }
+  if (args[0].startsWith("edit")) {
+    if (!args[1]) {message.channel.send(`No message id provided.`); return;};
+    if (Object.keys(server.selfassigns).includes(args[1])) {
+      var channel = message.guild.channels.get(server.selfassigns[args[1]]["channel"]);
+      if (channel) {
+        channel.fetchMessage(args[1])
+          .then(m => {
+            if (args[2] == "header" || args[2] == "footer") {
+              if (args.length < 4) {message.channel.send(`Not enough arguments.`); return;};
+              server.selfassigns[args[1]][args[2]] = args.slice(2).join(" ")
+            }
+            else if (args[2] == "add") {
+              if (args[3].startsWith("<@&")) {
+                var roles = client.getMatches(args[3], client.regex.users, 1);
+                let role = message.guild.roles.get(roles[0]);
+                if (!role) {message.channel.send(`Role is invalid.`); return};
+                server.selfassigns[args[1]]["roles"].push(roles[0]);
+              } else {
+                let emoteID = client.regex.emojisingle.exec(args[3])[1];
+                let emote = client.emojis.get(emoteID);
+                if (!emote) {message.channel.send(`Emote is invalid or inaccessible.`); return};
+                let roleID = client.regex.user.exec(args[4])[1];
+                let role = message.guild.roles.get(roleID);
+                if (!role) {message.channel.send(`Role is invalid.`); return};
+                server.selfassigns[args[1]]["assigns"][emoteID] = roleID;
+              };
+            }
+            else if (args[2] == "remove") {
+              if (args[3].startsWith("<@&")) {
+                let roleID = client.regex.user.exec(args[3])[1];
+                let index = server.selfassigns[args[1]]["roles"].indexOf(roleID);
+                if (index > -1) {
+                  server.selfassigns[args[1]]["roles"].splice(index, 1);
+                } else {message.channel.send(`Role wasn't required.`); return};
+              } else {
+                let emoteID = client.regex.emojisingle.exec(args[3])[1];
+                if (Object.keys(server.selfassigns[args[1]]["assigns"]).includes(emoteID)) {
+                  delete server.selfassigns[args[1]]["assigns"][emoteID]
+                } else {message.channel.send(`Emote wasn't included.`); return};
+              }
+            } else {message.channel.send(`Must be 'header', 'footer', 'add', or 'remove'.`); return};
+
+            var newmsg = "\n";
+            for (const property in server.selfassigns[args[1]]["assigns"]) {
+              let emote = client.emojis.get(property);
+              let role = message.guild.roles.get(assigns[property]);
+              reactions.push(property);
+              newmsg += `${emote} - ${role}\n`;
+            }
+            newmsg += "\n"+server.selfassigns[args[1]]["footer"];
+
+            var embed = new Discord.RichEmbed()
+              .setColor("#f712ff")
+              .setTitle(server.selfassigns[args[1]]["header"])
+              .setDescription(newmsg)
+
+            m.edit(embed);
+            message.channel.send(`Self-assign message edited.`)
+            client.settings.set(message.guild.id, server);
+          })
+          .catch(console.error);
+      } else {message.channel.send(`Couldn't find self-assign entry ${args[1]}.`)}
+    } else {message.channel.send(`Message id not found in database.`); return;};
+  }
 }
