@@ -145,7 +145,7 @@ exports.run = (client, server, message, args) => {
               var reaction = m.reactions.get(remEmote)
               console.log(reaction.emoji.name)
               console.log(Array.from(reaction.users.values()).toString())
-              for (const user in reaction.users.values()) {
+              for (const user in Array.from(reaction.users.values())) {
                 reaction.remove(user);
               }
             };
