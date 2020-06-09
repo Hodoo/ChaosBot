@@ -143,11 +143,12 @@ exports.run = (client, server, message, args) => {
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
               var reaction = m.reactions.get(remEmote)
+              var users = Array.from(reaction.users.values());
               console.log(reaction.emoji.name)
               console.log(Array.from(reaction.users.values()).toString())
-              for (const user in Array.from(reaction.users.values())) {
-                console.log(user)
-                reaction.remove(user);
+              for (const x in users) {
+                console.log(users[x])
+                reaction.remove(users[x]);
               }
             };
             message.channel.send(`Self-assign message edited.`)
