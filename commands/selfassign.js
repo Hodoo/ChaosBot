@@ -120,7 +120,7 @@ exports.run = (client, server, message, args) => {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
                 if (Object.keys(server.selfassigns[args[1]]["assigns"]).includes(emoteID)) {
                   delete server.selfassigns[args[1]]["assigns"][emoteID]
-                  var remEmote = emoteID;
+                  var remEmote = client.emojis.get(emoteID).identifier;
                   emoteRemoved = true;
                 } else {message.channel.send(`Emote wasn't included.`); return};
               }
