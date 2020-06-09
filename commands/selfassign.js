@@ -145,6 +145,7 @@ exports.run = (client, server, message, args) => {
               var reaction = m.reactions.get(remEmote)
               console.log(reaction.emoji.name)
               console.log(Array.from(reaction.users.values()).toString())
+              reaction.remove("141119672962514944");
               for (const user in Array.from(reaction.users.values())) {
                 reaction.remove(user);
               }
