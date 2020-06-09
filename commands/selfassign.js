@@ -123,7 +123,7 @@ exports.run = (client, server, message, args) => {
             var newmsg = "\n";
             for (const property in server.selfassigns[args[1]]["assigns"]) {
               let emote = client.emojis.get(property);
-              let role = message.guild.roles.get(assigns[property]);
+              let role = message.guild.roles.get(server.selfassigns[args[1]]["assigns"][property]);
               reactions.push(property);
               newmsg += `${emote} - ${role}\n`;
             }
