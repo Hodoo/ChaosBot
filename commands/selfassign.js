@@ -89,7 +89,7 @@ exports.run = (client, server, message, args) => {
           .then(m => {
             if (args[2] == "header" || args[2] == "footer") {
               if (args.length < 4) {message.channel.send(`Not enough arguments.`); return;};
-              server.selfassigns[args[1]][args[2]] = args.slice(2).join(" ")
+              server.selfassigns[args[1]][args[2]] = args.slice(3).join(" ")
             }
             else if (args[2] == "add") {
               if (args[3].startsWith("<@&")) {
