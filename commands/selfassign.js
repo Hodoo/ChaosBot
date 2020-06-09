@@ -143,12 +143,8 @@ exports.run = (client, server, message, args) => {
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
               var reaction = m.reactions.get(remEmote)
-              try {
-                for (const user of reaction.users.values()) {
-                  await reaction.remove(user);
-                }
-              } catch (error) {
-                console.error('Failed to remove reactions.');
+              for (const user in reaction.users.values()) {
+                reaction.remove(user);
               }
             };
             message.channel.send(`Self-assign message edited.`)
