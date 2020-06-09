@@ -79,6 +79,8 @@ exports.run = (client, server, message, args) => {
     } else {message.channel.send(`Message id not found in database.`); return;};
   }
   if (args[0].startsWith("edit")) {
+    var emoteAdded = false;
+    var emoteRemoved = false;
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
     if (Object.keys(server.selfassigns).includes(args[1])) {
       var channel = message.guild.channels.get(server.selfassigns[args[1]]["channel"]);
@@ -99,6 +101,7 @@ exports.run = (client, server, message, args) => {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
                 let emote = client.emojis.get(emoteID);
                 var newEmote = emoteID;
+                emoteAdded = true;
                 if (!emote) {message.channel.send(`Emote is invalid or inaccessible.`); return};
                 let roleID = client.regex.user.exec(args[4])[1];
                 let role = message.guild.roles.get(roleID);
@@ -118,6 +121,7 @@ exports.run = (client, server, message, args) => {
                 if (Object.keys(server.selfassigns[args[1]]["assigns"]).includes(emoteID)) {
                   delete server.selfassigns[args[1]]["assigns"][emoteID]
                   var remEmote = client.emojis.get(emoteID).identifier;
+                  emoteRemoved = true;
                 } else {message.channel.send(`Emote wasn't included.`); return};
               }
             } else {message.channel.send(`Must be 'header', 'footer', 'add', or 'remove'.`); return};
@@ -136,11 +140,15 @@ exports.run = (client, server, message, args) => {
               .setDescription(newmsg)
 
             m.edit(embed);
-            if (newEmote) {m.react(newEmote)};
-            if (remEmote) {
+            if (emoteAdded == true) {m.react(newEmote)};
+            if (emoteRemoved == true) {
               var reaction = m.reactions.get(remEmote)
-              for (const user of reaction.users.values()) {
-                await reaction.remove(user);
+              try {
+                for (const user of reaction.users.values()) {
+                  await reaction.remove(user);
+                }
+              } catch (error) {
+                console.error('Failed to remove reactions.');
               }
             };
             message.channel.send(`Self-assign message edited.`)
