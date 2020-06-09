@@ -98,6 +98,7 @@ exports.run = (client, server, message, args) => {
               } else {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
                 let emote = client.emojis.get(emoteID);
+                var newEmote = emoteID;
                 if (!emote) {message.channel.send(`Emote is invalid or inaccessible.`); return};
                 let roleID = client.regex.user.exec(args[4])[1];
                 let role = message.guild.roles.get(roleID);
@@ -116,6 +117,7 @@ exports.run = (client, server, message, args) => {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
                 if (Object.keys(server.selfassigns[args[1]]["assigns"]).includes(emoteID)) {
                   delete server.selfassigns[args[1]]["assigns"][emoteID]
+                  var remEmote = client.emojis.get(emoteID).identifier;
                 } else {message.channel.send(`Emote wasn't included.`); return};
               }
             } else {message.channel.send(`Must be 'header', 'footer', 'add', or 'remove'.`); return};
@@ -134,6 +136,13 @@ exports.run = (client, server, message, args) => {
               .setDescription(newmsg)
 
             m.edit(embed);
+            if (newEmote) {m.react(newEmote)};
+            if (remEmote) {
+              var reaction = m.reactions.get(remEmote)
+              for (const user of reaction.users.values()) {
+                await reaction.remove(user);
+              }
+            };
             message.channel.send(`Self-assign message edited.`)
             client.settings.set(message.guild.id, server);
           })
