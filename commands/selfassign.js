@@ -124,7 +124,6 @@ exports.run = (client, server, message, args) => {
             for (const property in server.selfassigns[args[1]]["assigns"]) {
               let emote = client.emojis.get(property);
               let role = message.guild.roles.get(server.selfassigns[args[1]]["assigns"][property]);
-              reactions.push(property);
               newmsg += `${emote} - ${role}\n`;
             }
             newmsg += "\n"+server.selfassigns[args[1]]["footer"];
