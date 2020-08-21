@@ -24,6 +24,7 @@ exports.run = (client, server, message, args) => {
             reactors[x].push(member.displayName)
           })
         })
+        reactors[x].sort();
         newmsg = `**Reactions for ${emojis[x]}**\n`
         reactors[x].forEach(user => newmsg += `${user}\n`);
         message.channel.send(newmsg);
