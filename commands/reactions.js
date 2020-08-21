@@ -20,7 +20,8 @@ exports.run = (client, server, message, args) => {
         await reaction.fetchUsers()
         .then(users => {
           users.tap(user => {
-            reactors[x].push(user.username)
+            let member = message.guild.member(user);
+            reactors[x].push(member.displayName)
           })
         })
         newmsg = `**Reactions for ${emojis[x]}**\n`
