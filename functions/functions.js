@@ -43,7 +43,7 @@ module.exports = (client) => {
           let role = guild.roles.cache.get(server.roletimers[x][1]);
           if (role) {
             if (role.members.size > 0) {
-              role.members.forEach(member => {member.removeRole(role.id)});
+              role.members.forEach(member => {member.roles.remove(role.id)});
               if (server.roletimers[x][2] && server.roletimers[x][3]) {
                 guild.channels.cache.get(server.roletimers[x][2]).send(server.roletimers[x][3]);
               };
