@@ -21,7 +21,7 @@ exports.run = (client, server, message, args) => {
         .then(users => {
           users.tap(user => {
             let member = message.guild.member(user);
-            reactors[x].push(member.displayName)
+            reactors[x].push(member.displayName)   // TypeError: Cannot read property 'displayName' of null
           })
         })
         reactors[x].sort();
