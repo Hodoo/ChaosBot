@@ -6,7 +6,7 @@ exports.run = (client, server, message, args) => {
   // If first argument is a role mention
   if (args[0].startsWith("<@&")) {
     let targetID = client.regex.user.exec(args[0])[1];
-    let role = message.guild.roles.get(targetID);
+    let role = message.guild.roles.cache.get(targetID);
     if (!role) {message.channel.send(`That isn't a valid role.`); return};
     if (args[1] >= 0 && args[1] <= 10) {
       server.perms[targetID] = args[1];
