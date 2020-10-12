@@ -142,7 +142,7 @@ exports.run = (client, server, message, args) => {
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
               var reaction = m.reactions.cache.get(remEmote)
-              var users = Array.from(reaction.users.cache.values());
+              var users = Array.from(reaction.users.cache.values());  // TypeError: Cannot read property 'users' of undefined
               for (const x in users) {
                 reaction.remove(users[x]);
               }
