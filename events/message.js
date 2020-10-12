@@ -49,7 +49,7 @@ exports.run = (client, message) => {
   if (server.singlechannels.includes(message.channel.id)) {
     async function clear() {
       var fetched = await message.channel.messages.fetch({before: message.id});
-      message.channel.bulkDelete(fetched);
+      message.channel.bulkDelete(fetched);   // DiscordAPIError: You can only bulk delete messages that are under 14 days old.
     }
     clear();
     return;
