@@ -88,7 +88,7 @@ exports.run = (client, server, message, args) => {
         var brakeProjection = "";
       };
 
-      var embed = new Discord.RichEmbed()
+      var embed = new Discord.MessageEmbed()
         .setColor("#f712ff")
         .setAuthor(`${message.member.displayName}'s ${coat} L${level}`)
         .setThumbnail(`https://bdocodex.com/items/new_ui_common_forlua/window/stable/horse_${coats[coat][2]}.png`)
