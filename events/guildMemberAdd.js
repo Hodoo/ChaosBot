@@ -6,7 +6,7 @@ exports.run = (client, member) => {
     let randmsg = server.greetmessages[Math.floor(Math.random() * server.greetmessages.length)];
     let message = client.replaceVars(member, randmsg);
     for (i in channels) {
-      member.guild.channels.get(channels[i]).send(message);
+      member.guild.channels.cache.get(channels[i]).send(message);
     }
   }
 };

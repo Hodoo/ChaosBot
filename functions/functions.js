@@ -32,20 +32,20 @@ module.exports = (client) => {
 
 // Function to iterate through timers
   client.runTimers = function() {
-    let currentGuilds = Array.from(client.guilds.keys());
+    let currentGuilds = Array.from(client.guilds.cache.keys());
     let i;
     for (i in currentGuilds) {
-      let guild = client.guilds.get(currentGuilds[i]);
+      let guild = client.guilds.cache.get(currentGuilds[i]);
       let server = client.settings.get(currentGuilds[i]);
       let x;
       for (x in server.roletimers) {
         if (Date.now() > server.roletimers[x][0]) {
-          let role = guild.roles.get(server.roletimers[x][1]);
+          let role = guild.roles.cache.get(server.roletimers[x][1]);
           if (role) {
             if (role.members.size > 0) {
-              role.members.forEach(member => {member.removeRole(role.id)});
+              role.members.forEach(member => {member.roles.remove(role.id)});
               if (server.roletimers[x][2] && server.roletimers[x][3]) {
-                guild.channels.get(server.roletimers[x][2]).send(server.roletimers[x][3]);
+                guild.channels.cache.get(server.roletimers[x][2]).send(server.roletimers[x][3]);
               };
             }
           }

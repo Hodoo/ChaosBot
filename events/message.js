@@ -27,7 +27,7 @@ exports.run = (client, message) => {
     if (message.member.id == server.ownerID) message.member.authLevel = 10;
     else {
       var permArray = Object.keys(server.perms)
-      message.member.roles.keyArray().forEach(function(element) {
+      message.member.roles.cache.keyArray().forEach(function(element) {
         if (permArray.includes(element.toString())) {
           matches.push(server.perms[element]);
         }
@@ -48,8 +48,8 @@ exports.run = (client, message) => {
   // Check if posted in a webhook channel
   if (server.singlechannels.includes(message.channel.id)) {
     async function clear() {
-      var fetched = await message.channel.fetchMessages({before: message.id});
-      message.channel.bulkDelete(fetched);
+      var fetched = await message.channel.messages.fetch({before: message.id});
+      message.channel.bulkDelete(fetched);   // DiscordAPIError: You can only bulk delete messages that are under 14 days old.
     }
     clear();
     return;
@@ -78,8 +78,8 @@ exports.run = (client, message) => {
   // Check if posted in a suggestion channel
   if (server.suggestchannels.includes(message.channel.id)) {
   // Get server's :upvote: and :downvote: emojis
-    const upvote = client.emojis.find(emoji => emoji.name === "upvote");
-    const downvote = client.emojis.find(emoji => emoji.name === "downvote");
+    const upvote = client.emojis.cache.find(emoji => emoji.name === "upvote");
+    const downvote = client.emojis.cache.find(emoji => emoji.name === "downvote");
   // React with said emojis
     message.react(upvote.id)
       .then( () => message.react(downvote.id) )

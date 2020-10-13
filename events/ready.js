@@ -4,7 +4,7 @@ exports.run = (client) => {
   if (lastGuilds.indexOf('lastVersion') > -1) {
     lastGuilds.splice(lastGuilds.indexOf('lastVersion'), 1);
   }
-  let currentGuilds = Array.from(client.guilds.keys());
+  let currentGuilds = Array.from(client.guilds.cache.keys());
 
   let guildGains = currentGuilds.filter(x => !lastGuilds.includes(x));
   let guildLosses = lastGuilds.filter(x => !currentGuilds.includes(x));
@@ -14,7 +14,7 @@ exports.run = (client) => {
     let i;
     let server = require("../data/server-default.json");
     for (i in guildGains) {
-      let guild = client.guilds.get(guildGains[i])
+      let guild = client.guilds.cache.get(guildGains[i])
       server.ownerID = guild.ownerID;
       client.settings.set(guild.id, server);
       console.log(`${guild.name} (${guild.id}) was missing and has been added`)
@@ -34,7 +34,7 @@ exports.run = (client) => {
     let serverdefault = require("../data/server-default.json");
     let i;
     for (i in currentGuilds) {
-      let guild = client.guilds.get(currentGuilds[i]);
+      let guild = client.guilds.cache.get(currentGuilds[i]);
       let server = client.settings.get(currentGuilds[i]);
       server = Object.assign(serverdefault, server);
       client.settings.set(currentGuilds[i], server);

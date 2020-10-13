@@ -17,14 +17,14 @@ exports.run = (client, messageReaction, user, state) => {
 
   if (reqroles.length > 0) {
     reqroles.forEach(element => {
-      if (member.roles.has(element)) {allowed = 1}});
+      if (member.roles.cache.has(element)) {allowed = 1}});
   } else {allowed = 1};
 
 
   if (state == "Add") {
     if (allowed == 1) {
-      if (member.roles.has(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id])) return;
-      member.addRole(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id]);
+      if (member.roles.cache.has(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id])) return;
+      member.roles.add(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id]);
     } else {
       messageReaction.remove(user);
     }
@@ -32,8 +32,8 @@ exports.run = (client, messageReaction, user, state) => {
 
   if (state == "Remove") {
     if (allowed == 1) {
-      if (member.roles.has(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id])) {
-        member.removeRole(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id]);
+      if (member.roles.cache.has(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id])) {
+        member.roles.remove(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id]);
       }
     }
   };

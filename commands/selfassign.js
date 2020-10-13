@@ -5,7 +5,7 @@ exports.run = (client, server, message, args) => {
   if (args[0].startsWith("new")) {
     if (args.length < 3) {message.channel.send(`Not enough arguments.`); return;};
     if (args[1] && args[1].startsWith("<#")) {
-      var channel = message.guild.channels.get(client.regex.channel.exec(args[1])[1]);
+      var channel = message.guild.channels.cache.get(client.regex.channel.exec(args[1])[1]);
       if (!channel) {message.channel.send("Channel not found."); return;}
       var newArgs = args.slice(2).join(" ").split(/ \| /g);
       if (newArgs.length < 2) {message.channel.send(`Not enough arguments.`); return;};
@@ -13,7 +13,7 @@ exports.run = (client, server, message, args) => {
         var roles = client.getMatches(newArgs[0], client.regex.users, 1);
         var i;
         for (i = 0; i < roles.length; i++) {
-          let role = message.guild.roles.get(roles[i]);
+          let role = message.guild.roles.cache.get(roles[i]);
           if (!role) {message.channel.send(`One or more required roles are invalid.`); return};
         };
         newArgs = newArgs.slice(1);
@@ -27,10 +27,10 @@ exports.run = (client, server, message, args) => {
       for (i = 0; i < assignList.length; i += 2) {
         if (!assignList[i+1]) {message.channel.send(`Unmatched emote.`); return};
         let emoteID = client.regex.emojisingle.exec(assignList[i])[1];
-        let emote = client.emojis.get(emoteID);
+        let emote = client.emojis.cache.get(emoteID);
         if (!emote) {message.channel.send(`One or more assign emotes are invalid or inaccessible.`); return};
         let roleID = client.regex.user.exec(assignList[i+1])[1];
-        let role = message.guild.roles.get(roleID);
+        let role = message.guild.roles.cache.get(roleID);
         if (!role) {message.channel.send(`One or more assign roles are invalid.`); return};
         assigns[emoteID] = roleID;
       };
@@ -43,14 +43,14 @@ exports.run = (client, server, message, args) => {
 
       var newmsg = "\n";
       for (const property in assigns) {
-        let emote = client.emojis.get(property);
-        let role = message.guild.roles.get(assigns[property]);
+        let emote = client.emojis.cache.get(property);
+        let role = message.guild.roles.cache.get(assigns[property]);
         reactions.push(property);
         newmsg += `${emote} - ${role}\n`;
       }
       newmsg += "\n"+footer;
 
-      var embed = new Discord.RichEmbed()
+      var embed = new Discord.MessageEmbed()
         .setColor("#f712ff")
         .setTitle(header)
         .setDescription(newmsg)
@@ -66,9 +66,9 @@ exports.run = (client, server, message, args) => {
   if (args[0].startsWith("delete")) {
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
     if (Object.keys(server.selfassigns).includes(args[1])) {
-      var channel = message.guild.channels.get(server.selfassigns[args[1]]["channel"]);
+      var channel = message.guild.channels.cache.get(server.selfassigns[args[1]]["channel"]);
       if (channel) {
-        channel.fetchMessage(args[1])
+        channel.messages.fetch(args[1])
           .then(m => m.delete())
           .catch(console.error);
         message.channel.send(`Self-assign message deleted.`)
@@ -82,9 +82,9 @@ exports.run = (client, server, message, args) => {
     var emoteRemoved = false;
     if (!args[1]) {message.channel.send(`No message id provided.`); return;};
     if (Object.keys(server.selfassigns).includes(args[1])) {
-      var channel = message.guild.channels.get(server.selfassigns[args[1]]["channel"]);
+      var channel = message.guild.channels.cache.get(server.selfassigns[args[1]]["channel"]);
       if (channel) {
-        channel.fetchMessage(args[1])
+        channel.messages.fetch(args[1])
           .then(m => {
             if (args[2] == "header" || args[2] == "footer") {
               if (args.length < 4) {message.channel.send(`Not enough arguments.`); return;};
@@ -93,17 +93,17 @@ exports.run = (client, server, message, args) => {
             else if (args[2] == "add") {
               if (args[3].startsWith("<@&")) {
                 var roles = client.getMatches(args[3], client.regex.users, 1);
-                let role = message.guild.roles.get(roles[0]);
+                let role = message.guild.roles.cache.get(roles[0]);
                 if (!role) {message.channel.send(`Role is invalid.`); return};
                 server.selfassigns[args[1]]["roles"].push(roles[0]);
               } else {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
-                let emote = client.emojis.get(emoteID);
+                let emote = client.emojis.cache.get(emoteID);
                 var newEmote = emoteID;
                 emoteAdded = true;
                 if (!emote) {message.channel.send(`Emote is invalid or inaccessible.`); return};
                 let roleID = client.regex.user.exec(args[4])[1];
-                let role = message.guild.roles.get(roleID);
+                let role = message.guild.roles.cache.get(roleID);
                 if (!role) {message.channel.send(`Role is invalid.`); return};
                 server.selfassigns[args[1]]["assigns"][emoteID] = roleID;
               };
@@ -119,7 +119,7 @@ exports.run = (client, server, message, args) => {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
                 if (Object.keys(server.selfassigns[args[1]]["assigns"]).includes(emoteID)) {
                   delete server.selfassigns[args[1]]["assigns"][emoteID]
-                  var remEmote = client.emojis.get(emoteID).identifier;
+                  var remEmote = emoteID;
                   emoteRemoved = true;
                 } else {message.channel.send(`Emote wasn't included.`); return};
               }
@@ -127,13 +127,13 @@ exports.run = (client, server, message, args) => {
 
             var newmsg = "\n";
             for (const property in server.selfassigns[args[1]]["assigns"]) {
-              let emote = client.emojis.get(property);
-              let role = message.guild.roles.get(server.selfassigns[args[1]]["assigns"][property]);
+              let emote = client.emojis.cache.get(property);
+              let role = message.guild.roles.cache.get(server.selfassigns[args[1]]["assigns"][property]);
               newmsg += `${emote} - ${role}\n`;
             }
             newmsg += "\n"+server.selfassigns[args[1]]["footer"];
 
-            var embed = new Discord.RichEmbed()
+            var embed = new Discord.MessageEmbed()
               .setColor("#f712ff")
               .setTitle(server.selfassigns[args[1]]["header"])
               .setDescription(newmsg)
@@ -141,11 +141,8 @@ exports.run = (client, server, message, args) => {
             m.edit(embed);
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
-              var reaction = m.reactions.get(remEmote)
-              var users = Array.from(reaction.users.values());
-              for (const x in users) {
-                reaction.remove(users[x]);
-              }
+              var reaction = m.reactions.cache.get(remEmote)
+              reaction.remove();
             };
             message.channel.send(`Self-assign message edited.`)
             client.settings.set(message.guild.id, server);

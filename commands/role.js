@@ -19,7 +19,7 @@ exports.run = (client, server, message, args) => {
   else if (args[0] === "add") {
     if (args[1] && args[1].startsWith("<@&")) {
       let targetID = client.regex.user.exec(args[1])[1];
-      let role = message.guild.roles.get(targetID);
+      let role = message.guild.roles.cache.get(targetID);
       if (!role) {message.channel.send(`That isn't a valid role.`); return};
 
       if (!(args[2] === "gain" || args[2] === "loss")) {
