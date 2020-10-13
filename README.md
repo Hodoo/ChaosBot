@@ -27,6 +27,8 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!say [(#channel) message]` - Sends your message in the mentioned channel, or the current channel if omitted
 
+`!reactions [#channel] [message ID]` - Outputs a list of all reactions to the specified message
+
 `!version` - Returns the current ChaosBot version
 
 `!welcome/goodbye [command or #channel]`
@@ -48,10 +50,23 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
  * `$disc` - inserts the user's four-digit discriminator, preceded by the number sign
  * `$id` - inserts the user's id number
 
- `!roletimer [command or #channel]`
-   * `list` - returns a numbered list of current role timers
-   * `add [@role] [time] ([#channel] [message])` - sets up a daily time (in UTC, 24h format) to remove the mentioned role from all members
-   * `remove [number]` - removes the selected role timer from the list
+`!roletimer [command or #channel]`
+  * `list` - returns a numbered list of current role timers
+  * `add [@role] [time] ([#channel] [message])` - sets up a daily time (in UTC, 24h format) to remove the mentioned role from all members
+  * `remove [number]` - removes the selected role timer from the list
+
+
+`!selfassign [command]`
+  * `new [#channel] (@required_role |) [header text] | [:emote:] [@given_role] (...) (| footer text)` - creates a new embed in the specified channel for users to react for roles
+  * `delete [message ID]` - deletes the specified self-assign embed
+  * `edit [message ID] [command]` - edits the specified self-assign embed using the following sub-commands
+    * `header/footer [new text]` - alters the header or footer text
+    * `add [:emote:] [@role]` - adds the specified emote/role combination to the self-assign
+    * `remove [:emote:]` - removes the specified emote and its corresponding role from the self-assign
+
+#### Black Desert Online
+
+ `!horse [coat] [level] [speed] [accel] [turn] [brake]` - Outputs data and prediction for the stats of a given horse
 
 
 ## Setup
