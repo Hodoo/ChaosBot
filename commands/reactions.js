@@ -19,9 +19,9 @@ exports.run = (client, server, message, args) => {
         reactors[x] = [];
         await reaction.users.fetch()
         .then(users => {
-          users.tap(user => {
+          users.each(user => {
             let member = message.guild.member(user);
-            reactors[x].push(member.displayName)   // TypeError: Cannot read property 'displayName' of null
+            reactors[x].push(member.displayName)
           })
         })
         reactors[x].sort();
