@@ -119,7 +119,7 @@ exports.run = (client, server, message, args) => {
                 let emoteID = client.regex.emojisingle.exec(args[3])[1];
                 if (Object.keys(server.selfassigns[args[1]]["assigns"]).includes(emoteID)) {
                   delete server.selfassigns[args[1]]["assigns"][emoteID]
-                  var remEmote = client.emojis.cache.get(emoteID).identifier;
+                  var remEmote = emoteID;
                   emoteRemoved = true;
                 } else {message.channel.send(`Emote wasn't included.`); return};
               }
@@ -141,7 +141,7 @@ exports.run = (client, server, message, args) => {
             m.edit(embed);
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
-              var reaction = m.reactions.cache.get(emoteID)
+              var reaction = m.reactions.cache.get(remEmote)
               reaction.remove();
             };
             message.channel.send(`Self-assign message edited.`)
