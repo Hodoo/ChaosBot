@@ -141,11 +141,8 @@ exports.run = (client, server, message, args) => {
             m.edit(embed);
             if (emoteAdded == true) {m.react(newEmote)};
             if (emoteRemoved == true) {
-              var reaction = m.reactions.cache.get(remEmote)
-              var users = Array.from(reaction.users.cache.values());  // TypeError: Cannot read property 'users' of undefined
-              for (const x in users) {
-                reaction.remove(users[x]);
-              }
+              var reaction = m.reactions.cache.get(emoteID)
+              reaction.remove();
             };
             message.channel.send(`Self-assign message edited.`)
             client.settings.set(message.guild.id, server);
