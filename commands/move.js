@@ -16,13 +16,11 @@ exports.run = (client, server, message, args) => {
 	} else {console.log("No separator included"); return};
 
 
-  let oldChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[0].toLowerCase() || channel.id === newArgs[0]);
-  if (!oldChannel) {message.channel.send(`"${newArgs[0]}" does not exist.`); return;}
-  if (oldChannel.type !== "voice") {message.channel.send(`"${newArgs[0]}" is not a voice channel.`); return;}
+  let oldChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[0].toLowerCase() && channel.type === "voice" || channel.id === newArgs[0] && channel.type === "voice");
+  if (!oldChannel) {message.channel.send(`"${newArgs[0]}" is not a valid voice channel.`); return;}
 
-  let newChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[1].toLowerCase() || channel.id === newArgs[1]);
-  if (!newChannel) {message.channel.send(`"${newArgs[1]}" does not exist.`); return;}
-  if (newChannel.type !== "voice") {message.channel.send(`"${newArgs[1]}" is not a voice channel.`); return;}
+  let newChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[1].toLowerCase() && channel.type === "voice" || channel.id === newArgs[1] && channel.type === "voice");
+  if (!newChannel) {message.channel.send(`"${newArgs[1]}" is not a valid voice channel.`); return;}
 
   oldChannel.members.each(user => {
     if (role) {
