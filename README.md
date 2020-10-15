@@ -21,6 +21,8 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!voting` - Toggles the current channel as a voting channel
 
+`!move (@role) [voice channel] | [voice channel]` - Moves members between voice channels, optionally with a specific role
+
 `!singlechannel` - Toggles the current channel as a single-message channel
 
 `!auth [command or @role] (1-10)` - Sets the permission level for the mentioned role or command
