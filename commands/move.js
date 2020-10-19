@@ -27,7 +27,9 @@ exports.run = (client, server, message, args) => {
       if (role) {
         if (!user.roles.cache.has(roleID)) return;
       }
-      user.voice.setChannel(newChannel)
+      if (user.voice.channelID === oldChannel.id) {
+        user.voice.setChannel(newChannel)
+      }
     });
   }
   moveUsers();
