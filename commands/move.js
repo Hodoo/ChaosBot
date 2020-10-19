@@ -16,7 +16,7 @@ exports.run = (client, server, message, args) => {
 	} else {console.log("No separator included"); return};
 
 
-  let oldChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[0].toLowerCase() && channel.type === "voice" || channel.id === newArgs[0] && channel.type === "voice");
+  let oldChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[0].toLowerCase() && channel.type === "voice" || channel.id === newArgs[0] && channel.type === "voice").fetch(true);
   if (!oldChannel) {message.channel.send(`"${newArgs[0]}" is not a valid voice channel.`); return;}
 
   let newChannel = message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[1].toLowerCase() && channel.type === "voice" || channel.id === newArgs[1] && channel.type === "voice");
