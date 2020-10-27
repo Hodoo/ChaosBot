@@ -27,7 +27,7 @@ exports.run = (client, server, message, args) => {
       if (role) {
         if (!user.roles.cache.has(roleID)) return;
       }
-      try {user.voice.setChannel(newChannel)};
+      try {user.voice.setChannel(newChannel)}
       catch(err){};
     });
   }
