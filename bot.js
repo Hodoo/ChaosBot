@@ -28,9 +28,16 @@ app.get("/", (request, response) => {
   response.sendStatus(200);
 });
 
+if (!fs.existsSync('./data/web')){
+    fs.mkdirSync('./data/web');
+}
+app.use(express.static('data/web'));
+
 const cmdList = fs.readdirSync("./commands/");
 client.settings.set("commandList", cmdList);
 //console.log(`Loaded commands:\n${cmdList}`)
+
+client.settings.set("address", config.address);
 
 // Bot start
 client.on('ready', () => require(`./events/ready.js`).run(client));

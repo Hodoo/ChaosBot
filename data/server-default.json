@@ -14,5 +14,6 @@
   "greetmessages":[],
   "leavechannels":[],
   "leavemessages":[],
-  "selfassigns":{}
+  "selfassigns":{},
+  "reactTrackers":[]
 }

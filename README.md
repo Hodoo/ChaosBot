@@ -29,7 +29,7 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 
 `!say [(#channel) message]` - Sends your message in the mentioned channel, or the current channel if omitted
 
-`!reactions [#channel] [message ID]` - Outputs a list of all reactions to the specified message
+`!reactions [#channel] [message ID]` - Outputs a list of all reactions to the specified message into a text file, accessible from the browsers
 
 `!version` - Returns the current ChaosBot version
 
@@ -77,6 +77,7 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
 Create a copy of `config-default.json` in the `data` folder and rename it `config.json`
 - Add your bot's API token to the `token` field
 - Add your Discord ID to the `ownerID` field
+- Add the external IP or domain for your server in the `address` field. *(This should include the port from the `port` field, if your domain doesn't already point to it)*
 - If desired, change the `port` field to your desired port *(Default: 3000)*
 
 
