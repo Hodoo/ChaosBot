@@ -1,6 +1,7 @@
 exports.run = (client) => {
   let lastGuilds = Array.from(client.settings.keys());
   lastGuilds.splice(lastGuilds.indexOf('commandList'), 1);
+  lastGuilds.splice(lastGuilds.indexOf('address'), 1);
   if (lastGuilds.indexOf('lastVersion') > -1) {
     lastGuilds.splice(lastGuilds.indexOf('lastVersion'), 1);
   }
