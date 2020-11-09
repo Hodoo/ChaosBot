@@ -49,7 +49,7 @@ exports.run = (client, message) => {
     if (message.content.includes("tag=")) {
       var reason = "an affiliate link";
     } else {var reason = "a garbage link"};
-    var newmsg = message.content.replace(/((?:www\.)?ama?zo?n\.(?:com|ca|co.uk|co.jp|de|fr)\/(?:exec\/obidos\/ASIN\/|o\/|gp\/product\/|(?:(?:[^"\'/]*)\/)?dp\/|)(?:[A-Z0-9]{10}))((?:\/|\?|\#)(?:[^"\'\s]*))/g,'$1');
+    var newmsg = message.content.replace(/((?:www\.)?ama?zo?n\.(?:.+)\/(?:exec\/obidos\/ASIN\/|o\/|gp\/product\/|(?:(?:[^"\'/]*)\/)?dp\/|)(?:[A-Z0-9]{10}))((?:\/|\?|\#)(?:[^"\'\s]*))/g,'$1');
     if (newmsg != message.content) {
       message.delete({ reason: `Contained ${reason}`});
       message.author.send(`Your message was removed due to containing ${reason}.\nBelow is a fixed version of your message that you may resend.\n\n>>> ${newmsg}`);
