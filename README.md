@@ -66,6 +66,9 @@ In suggestion channels, ChaosBot will react to any messages posted in the channe
     * `add [:emote:] [@role]` - adds the specified emote/role combination to the self-assign
     * `remove [:emote:]` - removes the specified emote and its corresponding role from the self-assign
 
+`!toggle [setting]` - toggles the specified server-wide setting, from the following (case-sensitive)
+ * `amazonFilter` - deletes messages with amazon links that include affiliate or other unnecessary tags, providing the user with a cleaned version of their message to repost
+
 #### Black Desert Online
 
  `!horse [coat] [level] [speed] [accel] [turn] [brake]` - Outputs data and prediction for the stats of a given horse
