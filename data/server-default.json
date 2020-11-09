@@ -15,5 +15,6 @@
   "leavechannels":[],
   "leavemessages":[],
   "selfassigns":{},
-  "reactTrackers":[]
+  "reactTrackers":[],
+  "amazonFilter":false
 }
