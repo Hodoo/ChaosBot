@@ -45,7 +45,7 @@ exports.run = (client, message) => {
   }
 
   // Filter amazon affiliate and garbage links, if enabled
-  if (server.amazonFilter = true && message.content.includes("amazon.") && (message.content.includes("tag=") || message.content.includes("ref=") || message.content.includes("/?"))) {
+  if (server.amazonFilter == true && message.content.includes("amazon.") && (message.content.includes("tag=") || message.content.includes("ref=") || message.content.includes("/?"))) {
     if (message.content.includes("tag=")) {
       var reason = "an affiliate link";
     } else {var reason = "a garbage link"};
