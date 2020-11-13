@@ -16,6 +16,8 @@ exports.run = (client, server, message, args) => {
       var newArgs = args.join(" ").split(" | ");
   	} else {console.log("No separator included"); return};
 
+    if (newArgs.length < 2) {message.channel.send(`Not enough channels provided.`); return;};
+    if (newArgs.length > 2) {message.channel.send(`Too many channels provided.`); return;};
 
     let oldChannel = await message.guild.channels.cache.find(channel => channel.name.toLowerCase() === newArgs[0].toLowerCase() && channel.type === "voice" || channel.id === newArgs[0] && channel.type === "voice").fetch(true);
     if (!oldChannel) {message.channel.send(`"${newArgs[0]}" is not a valid voice channel.`); return;}
