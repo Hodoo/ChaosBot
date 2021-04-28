@@ -32,7 +32,7 @@ exports.run = (client, messageReaction, user, state) => {
           if (member.roles.cache.has(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id])) return;
           member.roles.add(server.selfassigns[messageReaction.message.id]["assigns"][messageReaction.emoji.id]);
         } else {
-          messageReaction.remove(user);
+          messageReaction.users.remove(user);
         }
       };
 
